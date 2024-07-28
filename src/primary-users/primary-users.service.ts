@@ -1,0 +1,136 @@
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { CreatePrimaryUserDto } from "./dto/create-primary-user.dto";
+import { UpdatePrimaryUserDto } from "./dto/update-primary-user.dto";
+import { UsersService } from "src/users/users.service";
+import { PrimaryRolesService } from "src/primary-roles/primary-roles.service";
+import { PaginationDto } from "src/common/dto/pagination.dto";
+import { PrimaryUserDto } from "./dto/primary-user.dto";
+import { PaginationMetaDto } from "src/common/dto/pagination-meta.dto";
+import { PaginationOptionsDto } from "src/common/dto/pagination-options.dto";
+import { plainToInstance } from "class-transformer";
+import { PrimaryUserRepository } from "./repositories/primary-user.repository";
+import { PrimaryUser } from "./entities/primary-user.entity";
+import { ResponseMessage } from "src/common/interfaces/response-message.interface";
+import { UpdateDefaultPrimaryUserDto } from "./dto/update-default-primary-user.dto";
+import { CreateDefaultPrimaryUserDto } from "./dto/create-default-primary-user.dto";
+
+@Injectable()
+export class PrimaryUsersService {
+  constructor(
+    private readonly primaryUserRepository: PrimaryUserRepository,
+    private readonly usersService: UsersService,
+    private readonly primaryRolesService: PrimaryRolesService,
+  ) {}
+
+  async create(createPrimaryUserDto: CreatePrimaryUserDto): Promise<PrimaryUser> {
+    // TODO can't create SuperAdmin
+    const user = await this.usersService.findOrCreate(createPrimaryUserDto);
+    const primaryRole = await this.primaryRolesService.findOne(createPrimaryUserDto.primaryRoleId);
+    return this.primaryUserRepository.createAndSave({ user, primaryRole });
+  }
+
+  async findMany(
+    paginationOptionsDto: PaginationOptionsDto,
+  ): Promise<PaginationDto<PrimaryUserDto>> {
+    const { entities, totalItems } =
+      await this.primaryUserRepository.findManyWithPaginationAndRelations(paginationOptionsDto);
+
+    const primaryUserDtos = plainToInstance(PrimaryUserDto, entities, {
+      excludeExtraneousValues: true,
+    });
+
+    const paginationMetaDto = new PaginationMetaDto({
+      paginationOptionsDto,
+      totalItems,
+    });
+
+    return new PaginationDto(primaryUserDtos, paginationMetaDto);
+  }
+
+  async findOne(primaryUserId: string): Promise<PrimaryUser> {
+    const primaryUser = await this.primaryUserRepository.findOneByIdWithRelations(primaryUserId, [
+      "user",
+      "primaryRole",
+    ]);
+    if (!primaryUser) {
+      throw new NotFoundException(`User with ID #${primaryUserId} not found`);
+    }
+    return primaryUser;
+  }
+
+  async findOneByUserIdWithRelations(
+    userId: string,
+    relations: string[] = [],
+  ): Promise<PrimaryUser> {
+    const primaryUser = await this.primaryUserRepository.findOneByUserIdWithRelations(
+      userId,
+      relations,
+    );
+    if (!primaryUser) {
+      throw new NotFoundException(`User with ID #${userId} not found`);
+    }
+    return primaryUser;
+  }
+
+  async update(
+    primaryUserId: string,
+    updatePrimaryUserDto: UpdatePrimaryUserDto,
+  ): Promise<PrimaryUser> {
+    // TODO can't update super admin
+    const primaryRole = await this.primaryRolesService.findOne(updatePrimaryUserDto.primaryRoleId);
+    const primaryUser = await this.primaryUserRepository.findOneByID(primaryUserId);
+    if (!primaryUser) {
+      throw new NotFoundException(`User with ID #${primaryUserId} not found`);
+    }
+    return this.primaryUserRepository.updateByIdWithRelations(primaryUserId, primaryRole, [
+      "user",
+      "primaryRole",
+    ]);
+  }
+
+  async remove(primaryUserId: string): Promise<ResponseMessage> {
+    // TODO Can't delete super admin
+    const primaryUser = await this.primaryUserRepository.findOneByID(primaryUserId);
+    if (!primaryUser) {
+      throw new NotFoundException(`User with ID #${primaryUserId} not found`);
+    }
+    await this.primaryUserRepository.removeByEntity(primaryUser);
+    return {
+      message: `Admin user with ID #${primaryUserId} has been deleted successfully`,
+    };
+  }
+
+  // For seeding
+  async createDefaultPrimaryUser(
+    createDefaultPrimaryUserDto: CreateDefaultPrimaryUserDto,
+  ): Promise<PrimaryUser> {
+    return this.primaryUserRepository.createAndSave(createDefaultPrimaryUserDto);
+  }
+
+  // For seeding
+  async findOneByPrimaryRoleIdWithRelationsSeed(
+    primaryRoleId: string,
+    relations: string[] = [],
+  ): Promise<PrimaryUser> {
+    return this.primaryUserRepository.findOneByPrimaryRoleId(primaryRoleId, relations);
+  }
+
+  // For seeding
+  async findOneByUserIdWithRelationsSeed(
+    userId: string,
+    relations: string[] = [],
+  ): Promise<PrimaryUser> {
+    return this.primaryUserRepository.findOneByUserIdWithRelations(userId, relations);
+  }
+
+  // For seeding
+  async updatePrimaryRoleById(
+    primaryUserId: string,
+    updateDefaultPrimaryUserDto: UpdateDefaultPrimaryUserDto,
+  ): Promise<void> {
+    return this.primaryUserRepository.updatePrimaryRoleById(
+      primaryUserId,
+      updateDefaultPrimaryUserDto,
+    );
+  }
+}
