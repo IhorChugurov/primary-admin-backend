@@ -6,4 +6,7 @@ export class TokensDto {
 
   @Expose()
   readonly refreshToken: string;
+
+  @Expose()
+  readonly email: string;
 }

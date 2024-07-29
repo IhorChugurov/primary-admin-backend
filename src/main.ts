@@ -20,6 +20,11 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter(), new TypeOrmExceptionFilter());
   app.useGlobalInterceptors(new TransformDataInterceptor());
   app.setGlobalPrefix("api");
+  app.enableCors({
+    origin: true,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+    credentials: true,
+  });
   const configService = app.get(ConfigService);
   const port = configService.get<number>("PORT", 3001);
 

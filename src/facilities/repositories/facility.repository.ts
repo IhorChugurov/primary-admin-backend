@@ -25,7 +25,6 @@ export class FacilityRepository extends Repository<Facility> {
     try {
       await this.save(newFacility);
     } catch (err) {
-      console.log(err);
       handleDatabaseErrors(err, EntityKeys.FACILITY);
     }
     return this.findOneByIdWithRelations(newFacility.id, ["group"]);
@@ -76,7 +75,6 @@ export class FacilityRepository extends Repository<Facility> {
   }
 
   findOneByName(name: string): Promise<Facility> {
-    console.log(name);
     return this.findOne({
       where: { name },
     });

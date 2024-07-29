@@ -57,12 +57,12 @@ export class AuthenticationService {
     return {
       accessToken,
       refreshToken,
+      email: user.email,
     };
   }
 
   async refreshTokens(refreshTokenDto: RefreshTokenDto): Promise<TokensDto> {
     try {
-      console.log(refreshTokenDto);
       const { sub, refreshTokenId } = await this.jwtService.verifyAsync<RefreshTokenData>(
         refreshTokenDto.refreshToken,
         {
@@ -71,11 +71,9 @@ export class AuthenticationService {
           secret: this.jwtConfiguration.secret,
         },
       );
-      console.log(sub, refreshTokenId);
       const user = await this.userRepository.findOneByOrFail({
         id: sub,
       });
-      console.log(user);
       const isValid = await this.refreshTokenService.validate(refreshTokenId, user);
       if (isValid) {
         await this.refreshTokenService.invalidate(refreshTokenId);
@@ -84,7 +82,6 @@ export class AuthenticationService {
       }
       return this.generateTokens(user);
     } catch (err) {
-      console.log(err);
       // Checking refresh token reuse.
       if (err instanceof InvalidatedRefreshTokenError) {
         // TODO Add additional actions when reusing a refresh token.

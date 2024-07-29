@@ -10,6 +10,6 @@ export class Facility extends AbstractEntity {
   @Column({ nullable: true })
   description: string;
 
-  @ManyToOne(() => Group, (group) => group.companies)
+  @ManyToOne(() => Group, (group) => group.facilities)
   group: Group;
 }

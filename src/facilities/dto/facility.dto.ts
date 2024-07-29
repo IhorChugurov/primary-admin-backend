@@ -1,5 +1,4 @@
-import { Expose, Type } from "class-transformer";
-import { GroupDto } from "src/groups/dto/group.dto";
+import { Expose } from "class-transformer";
 
 export class FacilityDto {
   @Expose()
@@ -10,8 +9,4 @@ export class FacilityDto {
 
   @Expose()
   readonly description: string;
-
-  @Expose()
-  @Type(() => GroupDto)
-  readonly group: GroupDto;
 }

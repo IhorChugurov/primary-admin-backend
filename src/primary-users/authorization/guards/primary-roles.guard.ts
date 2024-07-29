@@ -34,8 +34,6 @@ export class PrimaryRolesGuard implements CanActivate {
       throw new ForbiddenException();
     }
 
-    console.log(primaryUser);
-
     req.primaryUser = primaryUser;
 
     // TODO сделать проверку не просто по строке, а вынести предуставленные роли в отдельный файл

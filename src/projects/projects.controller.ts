@@ -8,26 +8,29 @@ import { ProjectDto } from "./dto/project.dto";
 import { ResponseMessage } from "src/common/interfaces/response-message.interface";
 
 @Roles("SuperAdmin", "Admin")
-@UseDto(ProjectDto)
 @Controller("projects")
 export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
 
+  @UseDto(ProjectDto)
   @Post()
   create(@Body() createProjectDto: CreateProjectDto): Promise<ProjectDto> {
     return this.projectsService.create(createProjectDto);
   }
 
+  @UseDto(ProjectDto)
   @Get()
   findAll(): Promise<ProjectDto[]> {
     return this.projectsService.findAll();
   }
 
+  @UseDto(ProjectDto)
   @Get(":id")
   findOne(@Param("id") projectId: string): Promise<ProjectDto> {
     return this.projectsService.findOne(projectId);
   }
 
+  @UseDto(ProjectDto)
   @Patch(":id")
   update(
     @Param("id") projectId: string,

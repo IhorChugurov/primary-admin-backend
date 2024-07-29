@@ -4,7 +4,7 @@ import { CreateFacilityDto } from "./dto/create-facility.dto";
 import { UpdateFacilityDto } from "./dto/update-facility.dto";
 import { Roles } from "src/primary-users/authorization/decorators/primary-roles.decorator";
 import { UseDto } from "src/common/decorators/dto.decorator";
-import { FacilityDto } from "./dto/facility.dto";
+import { FacilityRelationDto } from "./dto/facility-relation.dto";
 import { ResponseMessage } from "src/common/interfaces/response-message.interface";
 import { PaginationOptionsDto } from "src/common/dto/pagination-options.dto";
 import { PaginationDto } from "src/common/dto/pagination.dto";
@@ -14,35 +14,34 @@ import { PaginationDto } from "src/common/dto/pagination.dto";
 export class FacilitiesController {
   constructor(private readonly facilitiesService: FacilitiesService) {}
 
-  @UseDto(FacilityDto)
+  @UseDto(FacilityRelationDto)
   @Post()
-  create(@Body() createFacilityDto: CreateFacilityDto): Promise<FacilityDto> {
+  create(@Body() createFacilityDto: CreateFacilityDto): Promise<FacilityRelationDto> {
     return this.facilitiesService.create(createFacilityDto);
   }
 
   @Get()
   findMany(
     @Query() paginationOptionsDto: PaginationOptionsDto,
-  ): Promise<PaginationDto<FacilityDto>> {
+  ): Promise<PaginationDto<FacilityRelationDto>> {
     return this.facilitiesService.findMany(paginationOptionsDto);
   }
 
-  @UseDto(FacilityDto)
+  @UseDto(FacilityRelationDto)
   @Get(":id")
-  findOne(@Param("id") facilityId: string): Promise<FacilityDto> {
+  findOne(@Param("id") facilityId: string): Promise<FacilityRelationDto> {
     return this.facilitiesService.findOne(facilityId);
   }
 
-  @UseDto(FacilityDto)
+  @UseDto(FacilityRelationDto)
   @Patch(":id")
   update(
     @Param("id") facilityId: string,
     @Body() updateFacilityDto: UpdateFacilityDto,
-  ): Promise<FacilityDto> {
+  ): Promise<FacilityRelationDto> {
     return this.facilitiesService.update(facilityId, updateFacilityDto);
   }
 
-  @UseDto(FacilityDto)
   @Delete(":id")
   remove(@Param("id") facilityId: string): Promise<ResponseMessage> {
     return this.facilitiesService.remove(facilityId);

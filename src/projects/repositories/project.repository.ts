@@ -22,7 +22,6 @@ export class ProjectRepository extends Repository<Project> {
     try {
       return await this.save(newProject);
     } catch (err) {
-      console.log(err);
       handleDatabaseErrors(err, EntityKeys.PROJECT);
     }
   }

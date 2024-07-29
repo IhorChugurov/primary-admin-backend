@@ -1,6 +1,4 @@
 import { Module } from "@nestjs/common";
-import { CoffeesModule } from "./coffees/coffees.module";
-import { CoffeeRatingModule } from "./coffee-rating/coffee-rating.module";
 import { ConfigModule } from "@nestjs/config";
 import { CommonModule } from "./common/common.module";
 import { UsersModule } from "./users/users.module";
@@ -29,8 +27,6 @@ import { FacilityRolesModule } from "./facility-roles/facility-roles.module";
     DatabaseModule,
     IamModule,
     SeedModule,
-    CoffeesModule,
-    CoffeeRatingModule,
     CommonModule,
     UsersModule,
     PrimaryRolesModule,

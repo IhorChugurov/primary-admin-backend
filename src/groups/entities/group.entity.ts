@@ -11,5 +11,5 @@ export class Group extends AbstractEntity {
   description: string;
 
   @OneToMany(() => Facility, (facility) => facility.group)
-  companies: Facility[];
+  facilities: Facility[];
 }

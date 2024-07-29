@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { CreateFacilityDto } from "./dto/create-facility.dto";
 import { UpdateFacilityDto } from "./dto/update-facility.dto";
-import { FacilityDto } from "./dto/facility.dto";
+import { FacilityRelationDto } from "./dto/facility-relation.dto";
 import { ResponseMessage } from "src/common/interfaces/response-message.interface";
 import { PaginationDto } from "src/common/dto/pagination.dto";
 import { PaginationOptionsDto } from "src/common/dto/pagination-options.dto";
@@ -23,11 +23,13 @@ export class FacilitiesService {
     return this.facilityRepository.createAndSave(createFacilityDto, group);
   }
 
-  async findMany(paginationOptionsDto: PaginationOptionsDto): Promise<PaginationDto<FacilityDto>> {
+  async findMany(
+    paginationOptionsDto: PaginationOptionsDto,
+  ): Promise<PaginationDto<FacilityRelationDto>> {
     const { entities, totalItems } =
       await this.facilityRepository.findManyWithPaginationAndRelations(paginationOptionsDto);
 
-    const facilityDtos = plainToInstance(FacilityDto, entities, {
+    const facilityDtos = plainToInstance(FacilityRelationDto, entities, {
       excludeExtraneousValues: true,
     });
 

@@ -23,7 +23,6 @@ export class GroupRepository extends Repository<Group> {
     try {
       return await this.save(newGroup);
     } catch (err) {
-      console.log(err);
       handleDatabaseErrors(err, EntityKeys.GROUP);
     }
   }
@@ -38,6 +37,18 @@ export class GroupRepository extends Repository<Group> {
       handleDatabaseErrors(err, EntityKeys.GROUP);
     }
     return this.findOneByID(id);
+  }
+
+  async updateByIdWithRelations(id: string, updateGroupDto: UpdateGroupDto): Promise<Group> {
+    try {
+      await this.update(id, {
+        name: updateGroupDto.name,
+        description: updateGroupDto.description,
+      });
+    } catch (err) {
+      handleDatabaseErrors(err, EntityKeys.GROUP);
+    }
+    return this.findOneByIdWithRelations(id);
   }
 
   removeByEntity(group: Group): Promise<Group> {
@@ -64,8 +75,29 @@ export class GroupRepository extends Repository<Group> {
     return { entities, totalItems };
   }
 
+  async findManyWithPaginationAndRelations(
+    paginationOptionsDto: PaginationOptionsDto,
+  ): Promise<{ entities: Group[]; totalItems: number }> {
+    const queryBuilder = this.createQueryBuilder("group");
+
+    queryBuilder
+      .leftJoinAndSelect("group.facilities", "facility")
+      .orderBy("group.createdAt", paginationOptionsDto.order)
+      .addOrderBy("facility.updatedAt", "DESC")
+      .skip(paginationOptionsDto.skip)
+      .take(paginationOptionsDto.perPage);
+
+    if (paginationOptionsDto.search) {
+      const trimmedSearch = paginationOptionsDto.search.trim();
+      queryBuilder.andWhere("group.name LIKE :search", {
+        search: `%${trimmedSearch}%`,
+      });
+    }
+    const [entities, totalItems] = await queryBuilder.getManyAndCount();
+    return { entities, totalItems };
+  }
+
   findOneByName(name: string): Promise<Group> {
-    console.log(name);
     return this.findOne({
       where: { name },
     });
@@ -75,5 +107,13 @@ export class GroupRepository extends Repository<Group> {
     return this.findOne({
       where: { id },
     });
+  }
+
+  findOneByIdWithRelations(id: string): Promise<Group> {
+    return this.createQueryBuilder("group")
+      .leftJoinAndSelect("group.facilities", "facility")
+      .where("group.id = :id", { id })
+      .orderBy("facility.updatedAt", "DESC")
+      .getOne();
   }
 }

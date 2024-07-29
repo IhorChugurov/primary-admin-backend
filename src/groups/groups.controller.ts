@@ -8,6 +8,7 @@ import { GroupDto } from "./dto/group.dto";
 import { ResponseMessage } from "src/common/interfaces/response-message.interface";
 import { PaginationOptionsDto } from "src/common/dto/pagination-options.dto";
 import { PaginationDto } from "src/common/dto/pagination.dto";
+import { GroupFacilitiesDto } from "./dto/group-facilities.dto";
 
 @Roles("SuperAdmin", "Admin")
 @Controller("groups")
@@ -23,9 +24,8 @@ export class GroupsController {
   @Get()
   async findMany(
     @Query() paginationOptionsDto: PaginationOptionsDto,
-  ): Promise<PaginationDto<GroupDto>> {
-    const result = await this.groupsService.findMany(paginationOptionsDto);
-    console.log(result);
+  ): Promise<PaginationDto<GroupFacilitiesDto>> {
+    const result = await this.groupsService.findManyWithFacilities(paginationOptionsDto);
     return result;
   }
 
@@ -41,7 +41,6 @@ export class GroupsController {
     return this.groupsService.update(groupId, updateGroupDto);
   }
 
-  @UseDto(GroupDto)
   @Delete(":id")
   remove(@Param("id") groupId: string): Promise<ResponseMessage> {
     return this.groupsService.remove(groupId);
