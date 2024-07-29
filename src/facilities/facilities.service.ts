@@ -25,9 +25,13 @@ export class FacilitiesService {
 
   async findManyWithRelations(
     paginationOptionsDto: PaginationOptionsDto,
+    groupId: string,
   ): Promise<PaginationDto<FacilityRelationDto>> {
     const { entities, totalItems } =
-      await this.facilityRepository.findManyWithPaginationAndRelations(paginationOptionsDto);
+      await this.facilityRepository.findManyWithPaginationAndRelations(
+        paginationOptionsDto,
+        groupId,
+      );
 
     const facilityDtos = plainToInstance(FacilityRelationDto, entities, {
       excludeExtraneousValues: true,

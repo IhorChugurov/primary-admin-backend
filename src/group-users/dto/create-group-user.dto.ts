@@ -6,7 +6,4 @@ export class CreateGroupUserDto {
 
   @IsUUID()
   readonly groupId: string;
-
-  @IsUUID()
-  readonly groupRoleId: string;
 }

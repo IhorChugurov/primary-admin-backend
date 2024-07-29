@@ -17,7 +17,7 @@ export class GroupRolesController {
   }
 
   @Get(":id")
-  findOne(@Param("id") groupId: string, @ProjectId() projectId: string): Promise<GroupRoleDto> {
-    return this.groupRolesService.findOne(groupId, projectId);
+  findOne(@Param("id") groupRoleId: string, @ProjectId() projectId: string): Promise<GroupRoleDto> {
+    return this.groupRolesService.findOne(groupRoleId, projectId);
   }
 }

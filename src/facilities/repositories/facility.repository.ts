@@ -48,11 +48,13 @@ export class FacilityRepository extends Repository<Facility> {
 
   async findManyWithPaginationAndRelations(
     paginationOptionsDto: PaginationOptionsDto,
+    groupId: string,
   ): Promise<{ entities: Facility[]; totalItems: number }> {
     const queryBuilder = this.createQueryBuilder("facility");
 
     queryBuilder
       .leftJoinAndSelect("facility.group", "group")
+      .where("group.id = :groupId", { groupId })
       .orderBy("facility.createdAt", paginationOptionsDto.order)
       .skip(paginationOptionsDto.skip)
       .take(paginationOptionsDto.perPage);

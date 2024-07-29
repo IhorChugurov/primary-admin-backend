@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UsePipes } from "@nestjs/common";
 import { GroupUsersService } from "./group-users.service";
 import { CreateGroupUserDto } from "./dto/create-group-user.dto";
-import { UpdateGroupUserDto } from "./dto/update-group-user.dto";
 import { Roles } from "src/primary-users/authorization/decorators/primary-roles.decorator";
 import { UseDto } from "src/common/decorators/dto.decorator";
 import { GroupUserDto } from "./dto/group-user.dto";
@@ -37,16 +36,6 @@ export class GroupUsersController {
   @Get(":id")
   findOne(@Param("id") groupUserId: string, @ProjectId() projectId: string): Promise<GroupUserDto> {
     return this.groupUsersService.findOne(groupUserId, projectId);
-  }
-
-  @UseDto(GroupUserDto)
-  @Patch(":id")
-  update(
-    @Param("id") groupUserId: string,
-    @Body() updateGroupUserDto: UpdateGroupUserDto,
-    @ProjectId() projectId: string,
-  ): Promise<GroupUserDto> {
-    return this.groupUsersService.update(groupUserId, updateGroupUserDto, projectId);
   }
 
   @Delete(":id")

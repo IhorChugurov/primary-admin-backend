@@ -11,9 +11,8 @@ import { FacilitiesService } from "src/facilities/facilities.service";
 import { FacilityRolesService } from "src/facility-roles/facility-roles.service";
 import { CreateFacilityUserDto } from "./dto/create-facility-user.dto";
 import { FacilityUser } from "./entities/facility-user.entity";
-import { FacilityUserDto } from "./dto/facility-user.dto";
-import { UpdateFacilityUserDto } from "./dto/update-facility-user.dto";
 import { FacilityUserListDto } from "./dto/facility-user-list.dto";
+import { predefinedFacilityRoles } from "src/facility-roles/constants/facility-roles.constant";
 
 @Injectable()
 export class FacilityUsersService {
@@ -31,8 +30,11 @@ export class FacilityUsersService {
   ): Promise<FacilityUser> {
     const user = await this.usersService.findOrCreate(createFacilityUserDto.email);
     const facility = await this.facilitiesService.findOne(createFacilityUserDto.facilityId);
-    const facilityRole = await this.facilityRolesService.findOne(
-      createFacilityUserDto.facilityRoleId,
+    const adminFacilityRole = predefinedFacilityRoles.find(
+      (facilityRole) => facilityRole.name === "Admin",
+    );
+    const facilityRole = await this.facilityRolesService.findOneByName(
+      adminFacilityRole.name,
       projectId,
     );
     const project = await this.projectsService.findOne(projectId);
@@ -71,27 +73,6 @@ export class FacilityUsersService {
       throw new NotFoundException(`Facility admin with ID #${facilityUser} not found`);
     }
     return facilityUser;
-  }
-
-  async update(
-    facilityUserId: string,
-    updateFacilityUserDto: UpdateFacilityUserDto,
-    projectId: string,
-  ): Promise<FacilityUser> {
-    const facilityRole = await this.facilityRolesService.findOne(
-      updateFacilityUserDto.facilityRoleId,
-      projectId,
-    );
-    const facilityUser = await this.facilityUserRepository.findOneByID(facilityUserId, projectId);
-    if (!facilityUser) {
-      throw new NotFoundException(`Facility admin with ID #${facilityUserId} not found`);
-    }
-    return this.facilityUserRepository.updateByIdWithRelations(
-      facilityUserId,
-      facilityRole,
-      projectId,
-      ["user", "facility", "facilityRole", "project"],
-    );
   }
 
   async remove(facilityUserId: string, projectId: string): Promise<ResponseMessage> {

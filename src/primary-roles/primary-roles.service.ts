@@ -21,14 +21,17 @@ export class PrimaryRolesService {
     return primaryRole;
   }
 
-  // For seeding
-  async createDefaultPrimaryRole(createPrimaryRoleDto: CreatePrimaryRoleDto): Promise<PrimaryRole> {
-    return this.primaryRoleRepository.createAndSave(createPrimaryRoleDto);
+  async findOneByName(primaryRoleName: string): Promise<PrimaryRole> {
+    const primaryRole = await this.primaryRoleRepository.findOneByName(primaryRoleName);
+    if (!primaryRole) {
+      throw new NotFoundException(`Primary role with name #${primaryRoleName} not found`);
+    }
+    return primaryRole;
   }
 
   // For seeding
-  findOneByName(name: string): Promise<PrimaryRole> {
-    return this.primaryRoleRepository.findOneByName(name);
+  async createDefaultPrimaryRole(createPrimaryRoleDto: CreatePrimaryRoleDto): Promise<PrimaryRole> {
+    return this.primaryRoleRepository.createAndSave(createPrimaryRoleDto);
   }
 
   // For seeding

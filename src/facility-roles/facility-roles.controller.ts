@@ -18,9 +18,9 @@ export class FacilityRolesController {
 
   @Get(":id")
   findOne(
-    @Param("id") facilityId: string,
+    @Param("id") facilityRoleId: string,
     @ProjectId() projectId: string,
   ): Promise<FacilityRoleDto> {
-    return this.facilityRolesService.findOne(facilityId, projectId);
+    return this.facilityRolesService.findOne(facilityRoleId, projectId);
   }
 }

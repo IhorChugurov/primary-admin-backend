@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from "@nestjs/common";
 import { FacilityUsersService } from "./facility-users.service";
 import { CreateFacilityUserDto } from "./dto/create-facility-user.dto";
-import { UpdateFacilityUserDto } from "./dto/update-facility-user.dto";
 import { Roles } from "src/primary-users/authorization/decorators/primary-roles.decorator";
 import { FacilityUserDto } from "./dto/facility-user.dto";
 import { UseDto } from "src/common/decorators/dto.decorator";
@@ -40,16 +39,6 @@ export class FacilityUsersController {
     @ProjectId() projectId: string,
   ): Promise<FacilityUserDto> {
     return this.facilityUsersService.findOne(facilityUserId, projectId);
-  }
-
-  @UseDto(FacilityUserDto)
-  @Patch(":id")
-  update(
-    @Param("id") facilityUserId: string,
-    @Body() updateFacilityUserDto: UpdateFacilityUserDto,
-    @ProjectId() projectId: string,
-  ): Promise<FacilityUserDto> {
-    return this.facilityUsersService.update(facilityUserId, updateFacilityUserDto, projectId);
   }
 
   @Delete(":id")

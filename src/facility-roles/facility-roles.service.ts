@@ -22,14 +22,25 @@ export class FacilityRolesService {
     return this.facilityRoleRepository.findAllWithRelations(projectId, ["project"]);
   }
 
-  async findOne(facilityId: string, projectId: string): Promise<FacilityRole> {
+  async findOne(facilityRoleId: string, projectId: string): Promise<FacilityRole> {
     const facilityRole = await this.facilityRoleRepository.findOneByIdWithRelations(
-      facilityId,
+      facilityRoleId,
       projectId,
       ["project"],
     );
     if (!facilityRole) {
-      throw new NotFoundException(`Facility role with ID #${facilityId} not found`);
+      throw new NotFoundException(`Facility role with ID #${facilityRoleId} not found`);
+    }
+    return facilityRole;
+  }
+
+  async findOneByName(facilityRoleName: string, projectId: string): Promise<FacilityRole> {
+    const facilityRole = await this.facilityRoleRepository.findOneByName(
+      facilityRoleName,
+      projectId,
+    );
+    if (!facilityRole) {
+      throw new NotFoundException(`Facility role with name #${facilityRoleName} not found`);
     }
     return facilityRole;
   }

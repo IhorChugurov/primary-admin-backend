@@ -40,6 +40,12 @@ export class GroupRoleRepository extends Repository<GroupRole> {
     });
   }
 
+  findOneByName(name: string, projectId: string): Promise<GroupRole> {
+    return this.findOne({
+      where: { name, project: { id: projectId } },
+    });
+  }
+
   findAllWithRelations(projectId: string, relations: string[] = []): Promise<GroupRole[]> {
     return this.find({ where: { project: { id: projectId } }, relations });
   }

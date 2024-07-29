@@ -1,4 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from "@nestjs/common";
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+  ParseUUIDPipe,
+  HttpStatus,
+} from "@nestjs/common";
 import { FacilitiesService } from "./facilities.service";
 import { CreateFacilityDto } from "./dto/create-facility.dto";
 import { UpdateFacilityDto } from "./dto/update-facility.dto";
@@ -23,8 +34,11 @@ export class FacilitiesController {
   @Get()
   findMany(
     @Query() paginationOptionsDto: PaginationOptionsDto,
+    //TODO improve the validation of the groupId
+    @Query("groupId", new ParseUUIDPipe({ errorHttpStatusCode: HttpStatus.BAD_REQUEST }))
+    groupId: string,
   ): Promise<PaginationDto<FacilityRelationDto>> {
-    return this.facilitiesService.findManyWithRelations(paginationOptionsDto);
+    return this.facilitiesService.findManyWithRelations(paginationOptionsDto, groupId);
   }
 
   @UseDto(FacilityRelationDto)

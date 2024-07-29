@@ -6,7 +6,4 @@ export class CreateFacilityUserDto {
 
   @IsUUID()
   readonly facilityId: string;
-
-  @IsUUID()
-  readonly facilityRoleId: string;
 }

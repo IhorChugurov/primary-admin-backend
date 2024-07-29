@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from "@nestjs/common";
 import { PrimaryUsersService } from "./primary-users.service";
 import { CreatePrimaryUserDto } from "./dto/create-primary-user.dto";
-import { UpdatePrimaryUserDto } from "./dto/update-primary-user.dto";
 import { Roles } from "./authorization/decorators/primary-roles.decorator";
 import { PaginationOptionsDto } from "src/common/dto/pagination-options.dto";
 import { UseDto } from "src/common/decorators/dto.decorator";
@@ -33,15 +32,6 @@ export class PrimaryUsersController {
   @Get(":id")
   findOne(@Param("id") primaryUserId: string): Promise<PrimaryUserDto> {
     return this.primaryUsersService.findOne(primaryUserId);
-  }
-
-  @UseDto(PrimaryUserDto)
-  @Patch(":id")
-  update(
-    @Param("id") primaryUserId: string,
-    @Body() updatePrimaryUserDto: UpdatePrimaryUserDto,
-  ): Promise<PrimaryUserDto> {
-    return this.primaryUsersService.update(primaryUserId, updatePrimaryUserDto);
   }
 
   @Delete(":id")

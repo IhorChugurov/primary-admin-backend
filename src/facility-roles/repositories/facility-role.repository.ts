@@ -40,6 +40,12 @@ export class FacilityRoleRepository extends Repository<FacilityRole> {
     });
   }
 
+  findOneByName(name: string, projectId: string): Promise<FacilityRole> {
+    return this.findOne({
+      where: { name, project: { id: projectId } },
+    });
+  }
+
   findAllWithRelations(projectId: string, relations: string[] = []): Promise<FacilityRole[]> {
     return this.find({ where: { project: { id: projectId } }, relations });
   }

@@ -10,10 +10,9 @@ import { GroupsService } from "src/groups/groups.service";
 import { GroupRolesService } from "src/group-roles/group-roles.service";
 import { ProjectsService } from "src/projects/projects.service";
 import { CreateGroupUserDto } from "./dto/create-group-user.dto";
-import { GroupUserDto } from "./dto/group-user.dto";
 import { GroupUser } from "./entities/group-user.entity";
-import { UpdateGroupUserDto } from "./dto/update-group-user.dto";
 import { GroupUserListDto } from "./dto/group-user-list.dto";
+import { predefinedGroupRoles } from "src/group-roles/constants/group-roles.constant";
 
 @Injectable()
 export class GroupUsersService {
@@ -28,10 +27,8 @@ export class GroupUsersService {
   async create(createGroupUserDto: CreateGroupUserDto, projectId: string): Promise<GroupUser> {
     const user = await this.usersService.findOrCreate(createGroupUserDto.email);
     const group = await this.groupsService.findOne(createGroupUserDto.groupId);
-    const groupRole = await this.groupRolesService.findOne(
-      createGroupUserDto.groupRoleId,
-      projectId,
-    );
+    const adminGroupRole = predefinedGroupRoles.find((groupRole) => groupRole.name === "Admin");
+    const groupRole = await this.groupRolesService.findOneByName(adminGroupRole.name, projectId);
     const project = await this.projectsService.findOne(projectId);
     return this.groupUserRepository.createAndSave(user, group, groupRole, project);
   }
@@ -68,27 +65,6 @@ export class GroupUsersService {
       throw new NotFoundException(`Group admin with ID #${groupUser} not found`);
     }
     return groupUser;
-  }
-
-  async update(
-    groupUserId: string,
-    updateGroupUserDto: UpdateGroupUserDto,
-    projectId: string,
-  ): Promise<GroupUser> {
-    const groupRole = await this.groupRolesService.findOne(
-      updateGroupUserDto.groupRoleId,
-      projectId,
-    );
-    const groupUser = await this.groupUserRepository.findOneByID(groupUserId, projectId);
-    if (!groupUser) {
-      throw new NotFoundException(`Group admin with ID #${groupUserId} not found`);
-    }
-    return this.groupUserRepository.updateByIdWithRelations(groupUserId, groupRole, projectId, [
-      "user",
-      "group",
-      "groupRole",
-      "project",
-    ]);
   }
 
   async remove(groupUserId: string, projectId: string): Promise<ResponseMessage> {
