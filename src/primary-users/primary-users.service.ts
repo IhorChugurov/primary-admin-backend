@@ -13,6 +13,7 @@ import { PrimaryUser } from "./entities/primary-user.entity";
 import { ResponseMessage } from "src/common/interfaces/response-message.interface";
 import { UpdateDefaultPrimaryUserDto } from "./dto/update-default-primary-user.dto";
 import { CreateDefaultPrimaryUserDto } from "./dto/create-default-primary-user.dto";
+import { PrimaryUserListDto } from "./dto/primary-user-list.dto";
 
 @Injectable()
 export class PrimaryUsersService {
@@ -24,18 +25,18 @@ export class PrimaryUsersService {
 
   async create(createPrimaryUserDto: CreatePrimaryUserDto): Promise<PrimaryUser> {
     // TODO can't create SuperAdmin
-    const user = await this.usersService.findOrCreate(createPrimaryUserDto);
+    const user = await this.usersService.findOrCreate(createPrimaryUserDto.email);
     const primaryRole = await this.primaryRolesService.findOne(createPrimaryUserDto.primaryRoleId);
     return this.primaryUserRepository.createAndSave({ user, primaryRole });
   }
 
   async findMany(
     paginationOptionsDto: PaginationOptionsDto,
-  ): Promise<PaginationDto<PrimaryUserDto>> {
+  ): Promise<PaginationDto<PrimaryUserListDto>> {
     const { entities, totalItems } =
       await this.primaryUserRepository.findManyWithPaginationAndRelations(paginationOptionsDto);
 
-    const primaryUserDtos = plainToInstance(PrimaryUserDto, entities, {
+    const primaryUserDtos = plainToInstance(PrimaryUserListDto, entities, {
       excludeExtraneousValues: true,
     });
 

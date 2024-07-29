@@ -1,6 +1,7 @@
 import { AbstractEntity } from "src/common/entities/abstract.entity";
+import { FacilityUser } from "src/facility-users/entities/facility-user.entity";
 import { Group } from "src/groups/entities/group.entity";
-import { Column, Entity, ManyToOne } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
 
 @Entity()
 export class Facility extends AbstractEntity {
@@ -12,4 +13,7 @@ export class Facility extends AbstractEntity {
 
   @ManyToOne(() => Group, (group) => group.facilities)
   group: Group;
+
+  @OneToMany(() => FacilityUser, (facilityUser) => facilityUser.facility)
+  facilityUsers: FacilityUser[];
 }

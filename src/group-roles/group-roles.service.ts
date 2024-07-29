@@ -18,12 +18,14 @@ export class GroupRolesService {
     }
   }
 
-  findAll(): Promise<GroupRole[]> {
-    return this.groupRoleRepository.findAllWithRelations(["project"]);
+  findAll(projectId: string): Promise<GroupRole[]> {
+    return this.groupRoleRepository.findAllWithRelations(projectId, ["project"]);
   }
 
-  async findOne(groupId: string): Promise<GroupRole> {
-    const groupRole = await this.groupRoleRepository.findOneByIdWithRelations(groupId, ["project"]);
+  async findOne(groupId: string, projectId: string): Promise<GroupRole> {
+    const groupRole = await this.groupRoleRepository.findOneByIdWithRelations(groupId, projectId, [
+      "project",
+    ]);
     if (!groupRole) {
       throw new NotFoundException(`Group role with ID #${groupId} not found`);
     }

@@ -1,12 +1,14 @@
 export enum EntityKeys {
   USER = "user",
-  PRIMARY_ROLE = "primaryRole",
   PROJECT = "project",
   PRIMARY_USER = "primaryUser",
+  PRIMARY_ROLE = "primaryRole",
   GROUP = "group",
   FACILITY = "facility",
   GROUP_ROLE = "groupRole",
   FACILITY_ROLE = "facilityRole",
+  GROUP_USER = "groupUser",
+  FACILITY_USER = "facilityUser",
 }
 
 interface ErrorMapping {
@@ -17,11 +19,13 @@ interface EntityErrorMappings {
   [EntityKeys.USER]: ErrorMapping;
   [EntityKeys.PROJECT]: ErrorMapping;
   [EntityKeys.PRIMARY_USER]: ErrorMapping;
+  [EntityKeys.PRIMARY_ROLE]: ErrorMapping;
   [EntityKeys.GROUP]: ErrorMapping;
   [EntityKeys.FACILITY]: ErrorMapping;
   [EntityKeys.GROUP_ROLE]: ErrorMapping;
   [EntityKeys.FACILITY_ROLE]: ErrorMapping;
-  [EntityKeys.PRIMARY_ROLE]: ErrorMapping;
+  [EntityKeys.GROUP_USER]: ErrorMapping;
+  [EntityKeys.FACILITY_USER]: ErrorMapping;
 }
 
 export const sharedErrorMappings: ErrorMapping = {
@@ -38,6 +42,9 @@ export const entitySpecificErrorMappings: EntityErrorMappings = {
   [EntityKeys.PRIMARY_USER]: {
     "23505": "User with this email already admin",
   },
+  [EntityKeys.PRIMARY_ROLE]: {
+    "23505": "Primary role with this name already exists",
+  },
   [EntityKeys.GROUP]: {
     "23505": "Group with this name already exists",
   },
@@ -50,7 +57,10 @@ export const entitySpecificErrorMappings: EntityErrorMappings = {
   [EntityKeys.FACILITY_ROLE]: {
     "23505": "Facility role with this name already exists",
   },
-  [EntityKeys.PRIMARY_ROLE]: {
-    "23505": "Primary role with this name already exists",
+  [EntityKeys.GROUP_USER]: {
+    "23505": "Group user with this name already exists",
+  },
+  [EntityKeys.FACILITY_USER]: {
+    "23505": "Facility user with this name already exists",
   },
 };

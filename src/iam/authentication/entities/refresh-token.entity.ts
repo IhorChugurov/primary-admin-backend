@@ -4,6 +4,6 @@ import { Entity, ManyToOne } from "typeorm";
 
 @Entity()
 export class RefreshToken extends AbstractEntity {
-  @ManyToOne(() => User, (user) => user.refreshTokens, { onDelete: "CASCADE" })
+  @ManyToOne(() => User, (user) => user.refreshTokens, { cascade: true, onDelete: "CASCADE" })
   user: User;
 }

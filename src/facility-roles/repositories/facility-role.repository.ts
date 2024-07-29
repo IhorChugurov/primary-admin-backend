@@ -24,17 +24,23 @@ export class FacilityRoleRepository extends Repository<FacilityRole> {
     } catch (err) {
       handleDatabaseErrors(err, EntityKeys.FACILITY_ROLE);
     }
-    return this.findOneByIdWithRelations(newFacilityRole.id, ["project"]);
+    return this.findOneByIdWithRelations(newFacilityRole.id, createFacilityRoleDto.project.id, [
+      "project",
+    ]);
   }
 
-  findOneByIdWithRelations(id: string, relations: string[] = []): Promise<FacilityRole> {
+  findOneByIdWithRelations(
+    id: string,
+    projectId: string,
+    relations: string[] = [],
+  ): Promise<FacilityRole> {
     return this.findOne({
-      where: { id },
+      where: { id, project: { id: projectId } },
       relations,
     });
   }
 
-  findAllWithRelations(relations: string[] = []): Promise<FacilityRole[]> {
-    return this.find({ relations });
+  findAllWithRelations(projectId: string, relations: string[] = []): Promise<FacilityRole[]> {
+    return this.find({ where: { project: { id: projectId } }, relations });
   }
 }

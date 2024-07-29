@@ -16,6 +16,8 @@ import { FacilitiesModule } from "./facilities/facilities.module";
 import { GroupsModule } from "./groups/groups.module";
 import { GroupRolesModule } from "./group-roles/group-roles.module";
 import { FacilityRolesModule } from "./facility-roles/facility-roles.module";
+import { GroupUsersModule } from './group-users/group-users.module';
+import { FacilityUsersModule } from './facility-users/facility-users.module';
 
 @Module({
   imports: [
@@ -37,6 +39,8 @@ import { FacilityRolesModule } from "./facility-roles/facility-roles.module";
     GroupsModule,
     GroupRolesModule,
     FacilityRolesModule,
+    GroupUsersModule,
+    FacilityUsersModule,
   ],
 })
 export class AppModule {}

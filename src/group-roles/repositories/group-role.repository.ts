@@ -24,17 +24,23 @@ export class GroupRoleRepository extends Repository<GroupRole> {
     } catch (err) {
       handleDatabaseErrors(err, EntityKeys.GROUP_ROLE);
     }
-    return this.findOneByIdWithRelations(newGroupRole.id, ["project"]);
+    return this.findOneByIdWithRelations(newGroupRole.id, createGroupRoleDto.project.id, [
+      "project",
+    ]);
   }
 
-  findOneByIdWithRelations(id: string, relations: string[] = []): Promise<GroupRole> {
+  findOneByIdWithRelations(
+    id: string,
+    projectId: string,
+    relations: string[] = [],
+  ): Promise<GroupRole> {
     return this.findOne({
-      where: { id },
+      where: { id, project: { id: projectId } },
       relations,
     });
   }
 
-  findAllWithRelations(relations: string[] = []): Promise<GroupRole[]> {
-    return this.find({ relations });
+  findAllWithRelations(projectId: string, relations: string[] = []): Promise<GroupRole[]> {
+    return this.find({ where: { project: { id: projectId } }, relations });
   }
 }

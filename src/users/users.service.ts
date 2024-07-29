@@ -1,21 +1,29 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UserRepository } from "./repositories/user.repository";
 import { User } from "./entities/user.entity";
 import { UpdateUserDto } from "./dto/update-user.dto";
+import { PasswordService } from "src/shared/password.service";
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly userRepository: UserRepository) {}
+  private readonly logger = new Logger(UsersService.name);
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly passwordService: PasswordService,
+  ) {}
 
-  async findOrCreate(createUserDto: CreateUserDto): Promise<User> {
-    let user = await this.userRepository.findOneByEmail(createUserDto.email);
+  async findOrCreate(email: string): Promise<User> {
+    let user = await this.userRepository.findOneByEmail(email);
 
     if (user) {
       return user;
     }
+    const password = this.passwordService.generatePassword();
 
-    return this.userRepository.createAndSave(createUserDto);
+    this.logger.log(`Generated password for ${email}: ${password}`);
+
+    return this.userRepository.createAndSave({ email, password });
   }
 
   async findOne(userId: string): Promise<User> {

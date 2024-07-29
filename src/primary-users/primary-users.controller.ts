@@ -8,6 +8,7 @@ import { UseDto } from "src/common/decorators/dto.decorator";
 import { PrimaryUserDto } from "./dto/primary-user.dto";
 import { PaginationDto } from "src/common/dto/pagination.dto";
 import { ResponseMessage } from "src/common/interfaces/response-message.interface";
+import { PrimaryUserListDto } from "./dto/primary-user-list.dto";
 
 @Roles("SuperAdmin", "Admin")
 @Controller("primary-users")
@@ -24,7 +25,7 @@ export class PrimaryUsersController {
   @Get()
   findMany(
     @Query() paginationOptionsDto: PaginationOptionsDto,
-  ): Promise<PaginationDto<PrimaryUserDto>> {
+  ): Promise<PaginationDto<PrimaryUserListDto>> {
     return this.primaryUsersService.findMany(paginationOptionsDto);
   }
 

@@ -12,6 +12,9 @@ export class FacilityRelationDto {
   readonly description: string;
 
   @Expose()
+  readonly createdAt: Date;
+
+  @Expose()
   @Type(() => GroupDto)
   readonly group: GroupDto;
 }

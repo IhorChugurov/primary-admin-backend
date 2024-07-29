@@ -1,6 +1,7 @@
 import { AbstractEntity } from "src/common/entities/abstract.entity";
+import { FacilityUser } from "src/facility-users/entities/facility-user.entity";
 import { Project } from "src/projects/entities/project.entity";
-import { Column, Entity, ManyToOne, Unique } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, Unique } from "typeorm";
 
 @Entity()
 @Unique(["name", "project"])
@@ -13,4 +14,7 @@ export class FacilityRole extends AbstractEntity {
 
   @ManyToOne(() => Project, (project) => project.facilityRoles)
   project: Project;
+
+  @OneToMany(() => FacilityUser, (facilityUser) => facilityUser.facilityRole)
+  facilityUsers: FacilityUser[];
 }

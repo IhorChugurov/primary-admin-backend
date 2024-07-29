@@ -24,7 +24,7 @@ export class FacilitiesController {
   findMany(
     @Query() paginationOptionsDto: PaginationOptionsDto,
   ): Promise<PaginationDto<FacilityRelationDto>> {
-    return this.facilitiesService.findMany(paginationOptionsDto);
+    return this.facilitiesService.findManyWithRelations(paginationOptionsDto);
   }
 
   @UseDto(FacilityRelationDto)

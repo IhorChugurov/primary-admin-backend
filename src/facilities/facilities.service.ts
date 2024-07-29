@@ -23,7 +23,7 @@ export class FacilitiesService {
     return this.facilityRepository.createAndSave(createFacilityDto, group);
   }
 
-  async findMany(
+  async findManyWithRelations(
     paginationOptionsDto: PaginationOptionsDto,
   ): Promise<PaginationDto<FacilityRelationDto>> {
     const { entities, totalItems } =

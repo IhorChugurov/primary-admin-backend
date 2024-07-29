@@ -10,5 +10,6 @@ import { GroupsModule } from "src/groups/groups.module";
   imports: [TypeOrmModule.forFeature([Facility]), GroupsModule],
   controllers: [FacilitiesController],
   providers: [FacilitiesService, FacilityRepository],
+  exports: [FacilitiesService],
 })
 export class FacilitiesModule {}
