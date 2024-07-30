@@ -18,6 +18,8 @@ import { GroupRolesModule } from "./group-roles/group-roles.module";
 import { FacilityRolesModule } from "./facility-roles/facility-roles.module";
 import { GroupUsersModule } from './group-users/group-users.module';
 import { FacilityUsersModule } from './facility-users/facility-users.module';
+import { EnvironmentsModule } from './environments/environments.module';
+import { EnvironmentValuesModule } from './environment-values/environment-values.module';
 
 @Module({
   imports: [
@@ -41,6 +43,8 @@ import { FacilityUsersModule } from './facility-users/facility-users.module';
     FacilityRolesModule,
     GroupUsersModule,
     FacilityUsersModule,
+    EnvironmentsModule,
+    EnvironmentValuesModule,
   ],
 })
 export class AppModule {}

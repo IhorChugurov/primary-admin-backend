@@ -11,8 +11,6 @@ export class SeedService {
     private readonly primaryUsersSeedService: PrimaryUsersSeedService,
     private readonly usersSeedService: UsersSeedService,
     private readonly projectsSeedService: ProjectsSeedService,
-    // private readonly groupRolesSeedService: GroupRolesSeedService,
-    // private readonly facilityRolesRoleSeedService: FacilityRolesRoleSeedService,
   ) {}
 
   async seed() {
@@ -20,7 +18,5 @@ export class SeedService {
     const user = await this.usersSeedService.seedUser();
     await this.primaryUsersSeedService.seedPrimaryUser(user, roles);
     await this.projectsSeedService.seedProjects();
-    // await this.groupRolesSeedService.seedGroupRoles(user, roles);
-    // await this.facilityRolesRoleSeedService.seedFacilityRoles(user, roles);
   }
 }

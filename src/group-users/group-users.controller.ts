@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UsePipes } from "@nestjs/common";
+import { Controller, Get, Post, Body, Param, Delete, Query } from "@nestjs/common";
 import { GroupUsersService } from "./group-users.service";
 import { CreateGroupUserDto } from "./dto/create-group-user.dto";
 import { Roles } from "src/primary-users/authorization/decorators/primary-roles.decorator";

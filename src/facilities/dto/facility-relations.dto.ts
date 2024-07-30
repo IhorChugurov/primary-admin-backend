@@ -1,7 +1,7 @@
 import { Expose, Type } from "class-transformer";
 import { GroupDto } from "src/groups/dto/group.dto";
 
-export class FacilityRelationDto {
+export class FacilityRelationsDto {
   @Expose()
   readonly id: string;
 

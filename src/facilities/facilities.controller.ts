@@ -15,7 +15,7 @@ import { CreateFacilityDto } from "./dto/create-facility.dto";
 import { UpdateFacilityDto } from "./dto/update-facility.dto";
 import { Roles } from "src/primary-users/authorization/decorators/primary-roles.decorator";
 import { UseDto } from "src/common/decorators/dto.decorator";
-import { FacilityRelationDto } from "./dto/facility-relation.dto";
+import { FacilityRelationsDto } from "./dto/facility-relations.dto";
 import { ResponseMessage } from "src/common/interfaces/response-message.interface";
 import { PaginationOptionsDto } from "src/common/dto/pagination-options.dto";
 import { PaginationDto } from "src/common/dto/pagination.dto";
@@ -25,34 +25,34 @@ import { PaginationDto } from "src/common/dto/pagination.dto";
 export class FacilitiesController {
   constructor(private readonly facilitiesService: FacilitiesService) {}
 
-  @UseDto(FacilityRelationDto)
+  @UseDto(FacilityRelationsDto)
   @Post()
-  create(@Body() createFacilityDto: CreateFacilityDto): Promise<FacilityRelationDto> {
+  create(@Body() createFacilityDto: CreateFacilityDto): Promise<FacilityRelationsDto> {
     return this.facilitiesService.create(createFacilityDto);
   }
 
   @Get()
   findMany(
     @Query() paginationOptionsDto: PaginationOptionsDto,
-    //TODO improve the validation of the groupId
+    //TODO improve the validation
     @Query("groupId", new ParseUUIDPipe({ errorHttpStatusCode: HttpStatus.BAD_REQUEST }))
     groupId: string,
-  ): Promise<PaginationDto<FacilityRelationDto>> {
+  ): Promise<PaginationDto<FacilityRelationsDto>> {
     return this.facilitiesService.findManyWithRelations(paginationOptionsDto, groupId);
   }
 
-  @UseDto(FacilityRelationDto)
+  @UseDto(FacilityRelationsDto)
   @Get(":id")
-  findOne(@Param("id") facilityId: string): Promise<FacilityRelationDto> {
+  findOne(@Param("id") facilityId: string): Promise<FacilityRelationsDto> {
     return this.facilitiesService.findOne(facilityId);
   }
 
-  @UseDto(FacilityRelationDto)
+  @UseDto(FacilityRelationsDto)
   @Patch(":id")
   update(
     @Param("id") facilityId: string,
     @Body() updateFacilityDto: UpdateFacilityDto,
-  ): Promise<FacilityRelationDto> {
+  ): Promise<FacilityRelationsDto> {
     return this.facilitiesService.update(facilityId, updateFacilityDto);
   }
 

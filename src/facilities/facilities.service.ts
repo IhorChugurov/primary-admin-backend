@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { CreateFacilityDto } from "./dto/create-facility.dto";
 import { UpdateFacilityDto } from "./dto/update-facility.dto";
-import { FacilityRelationDto } from "./dto/facility-relation.dto";
+import { FacilityRelationsDto } from "./dto/facility-relations.dto";
 import { ResponseMessage } from "src/common/interfaces/response-message.interface";
 import { PaginationDto } from "src/common/dto/pagination.dto";
 import { PaginationOptionsDto } from "src/common/dto/pagination-options.dto";
@@ -26,14 +26,14 @@ export class FacilitiesService {
   async findManyWithRelations(
     paginationOptionsDto: PaginationOptionsDto,
     groupId: string,
-  ): Promise<PaginationDto<FacilityRelationDto>> {
+  ): Promise<PaginationDto<FacilityRelationsDto>> {
     const { entities, totalItems } =
       await this.facilityRepository.findManyWithPaginationAndRelations(
         paginationOptionsDto,
         groupId,
       );
 
-    const facilityDtos = plainToInstance(FacilityRelationDto, entities, {
+    const facilityDtos = plainToInstance(FacilityRelationsDto, entities, {
       excludeExtraneousValues: true,
     });
 
@@ -56,7 +56,7 @@ export class FacilitiesService {
   async update(facilityId: string, updateFacilityDto: UpdateFacilityDto): Promise<Facility> {
     const facility = await this.facilityRepository.findOneByID(facilityId);
     if (!facility) {
-      throw new NotFoundException(`Facility with ID #${facility} not found`);
+      throw new NotFoundException(`Facility with ID #${facilityId} not found`);
     }
     return this.facilityRepository.updateById(facilityId, updateFacilityDto);
   }

@@ -9,7 +9,6 @@ import { Entity, JoinColumn, ManyToOne, Unique } from "typeorm";
 @Unique(["user", "group", "project"])
 export class GroupUser extends AbstractEntity {
   @ManyToOne(() => User, (user) => user.groupUsers)
-  @JoinColumn()
   user: User;
 
   @ManyToOne(() => Group, (group) => group.groupUsers)

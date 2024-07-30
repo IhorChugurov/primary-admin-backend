@@ -9,6 +9,7 @@ export enum EntityKeys {
   FACILITY_ROLE = "facilityRole",
   GROUP_USER = "groupUser",
   FACILITY_USER = "facilityUser",
+  ENVIRONMENT = "environment",
 }
 
 interface ErrorMapping {
@@ -26,6 +27,7 @@ interface EntityErrorMappings {
   [EntityKeys.FACILITY_ROLE]: ErrorMapping;
   [EntityKeys.GROUP_USER]: ErrorMapping;
   [EntityKeys.FACILITY_USER]: ErrorMapping;
+  [EntityKeys.ENVIRONMENT]: ErrorMapping;
 }
 
 export const sharedErrorMappings: ErrorMapping = {
@@ -62,5 +64,8 @@ export const entitySpecificErrorMappings: EntityErrorMappings = {
   },
   [EntityKeys.FACILITY_USER]: {
     "23505": "Facility user with this name already exists",
+  },
+  [EntityKeys.ENVIRONMENT]: {
+    "23505": "Environment with this key already exists",
   },
 };
