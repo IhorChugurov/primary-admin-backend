@@ -9,6 +9,7 @@ import { CreateEnvironmentDto } from "../dto/create-environment.dto";
 import { UpdateEnvironmentDto } from "../dto/update-environment.dto";
 import { PaginationOptionsDto } from "src/common/dto/pagination-options.dto";
 import { Project } from "src/projects/entities/project.entity";
+import { EnvironmentDestinations } from "../enums/evironment-destination.enum";
 
 @Injectable()
 export class EnvironmentRepository extends Repository<Environment> {
@@ -80,6 +81,16 @@ export class EnvironmentRepository extends Repository<Environment> {
     }
     const [entities, totalItems] = await queryBuilder.getManyAndCount();
     return { entities, totalItems };
+  }
+
+  findAll(projectId: string): Promise<Environment[]> {
+    return this.find({ where: { project: { id: projectId } } });
+  }
+
+  findAllFirstAdminEnvironments(projectId: string): Promise<Environment[]> {
+    return this.find({
+      where: { project: { id: projectId }, destination: EnvironmentDestinations.FIRST },
+    });
   }
 
   findOneByIdWithRelations(

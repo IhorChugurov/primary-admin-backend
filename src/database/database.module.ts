@@ -14,13 +14,14 @@ import { TypeOrmModule } from "@nestjs/typeorm";
         username: configService.get<string>("db.username"),
         password: configService.get<string>("db.password"),
         database: configService.get<string>("db.database"),
-        // TODO почему нужно отключать на продакшене
         // Synchronize the database schema with the entities, every time the application starts.
         synchronize: configService.get<boolean>("db.synchronize"),
-        // TODO разобраться
         // Load modules automatically instead of specifying the entities array.
         autoLoadEntities: true,
         logging: true,
+        cli: {
+          migrationsDir: "src/database/migrations",
+        },
       }),
     }),
   ],

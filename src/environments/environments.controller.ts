@@ -39,7 +39,7 @@ export class EnvironmentsController {
     @Param("id") environmentId: string,
     @ProjectId() projectId: string,
   ): Promise<EnvironmentRelationsDto> {
-    return this.environmentsService.findOne(environmentId, projectId);
+    return this.environmentsService.findOneWithRelations(environmentId, projectId);
   }
 
   @UseDto(EnvironmentRelationsDto)

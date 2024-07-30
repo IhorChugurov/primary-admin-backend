@@ -48,7 +48,11 @@ export class EnvironmentsService {
     return new PaginationDto(environmentDtos, paginationMetaDto);
   }
 
-  async findOne(environmentId: string, projectId: string): Promise<Environment> {
+  findAllFirstAdminEnvironments(projectId: string): Promise<Environment[]> {
+    return this.environmentRepository.findAllFirstAdminEnvironments(projectId);
+  }
+
+  async findOneWithRelations(environmentId: string, projectId: string): Promise<Environment> {
     const environment = await this.environmentRepository.findOneByIdWithRelations(
       environmentId,
       projectId,
