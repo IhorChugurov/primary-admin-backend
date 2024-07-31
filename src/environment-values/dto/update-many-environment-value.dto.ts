@@ -1,10 +1,10 @@
-import { IsArray, IsNotEmpty, IsString } from "class-validator";
+import { Type } from "class-transformer";
+import { IsArray, ValidateNested } from "class-validator";
+import { EnvironmentValueItemDto } from "./environment-value-item.dto";
 
 export class UpdateManyEnvironmentValuesDto {
-  @IsString()
-  @IsNotEmpty()
-  facilityId: string;
-
   @IsArray()
-  items: Array<Record<string, boolean | string | number | Date>>;
+  @ValidateNested({ each: true })
+  @Type(() => EnvironmentValueItemDto)
+  items: EnvironmentValueItemDto[];
 }

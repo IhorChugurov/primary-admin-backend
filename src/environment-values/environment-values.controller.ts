@@ -1,4 +1,13 @@
-import { Body, Controller, Get, HttpStatus, ParseUUIDPipe, Post, Query } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Param,
+  ParseUUIDPipe,
+  Post,
+  Query,
+} from "@nestjs/common";
 import { EnvironmentValuesService } from "./environment-values.service";
 import { Roles } from "src/primary-users/authorization/decorators/primary-roles.decorator";
 import { ProjectId } from "src/projects/decorators/project-id.decorator";
@@ -13,22 +22,28 @@ export class EnvironmentValuesController {
   constructor(private readonly environmentValuesService: EnvironmentValuesService) {}
 
   @UseDto(EnvironmentValueListDto)
-  @Get()
+  @Get(":id")
   findAll(
     @ProjectId() projectId: string,
     //TODO improve the validation
     // @Query("facilityId", new ParseUUIDPipe({ errorHttpStatusCode: HttpStatus.BAD_REQUEST }))
-    @Query("facilityId")
+    @Param("id")
     facilityId: string,
   ): Promise<EnvironmentValueListDto[]> {
     return this.environmentValuesService.findAll(projectId, facilityId);
   }
 
-  @Post("update-many")
+  @Post(":id")
   update(
     @ProjectId() projectId: string,
+    @Param("id")
+    facilityId: string,
     @Body() updateManyEnvironmentValuesDto: UpdateManyEnvironmentValuesDto,
   ): Promise<ResponseMessage> {
-    return this.environmentValuesService.updateMany(projectId, updateManyEnvironmentValuesDto);
+    return this.environmentValuesService.updateMany(
+      projectId,
+      facilityId,
+      updateManyEnvironmentValuesDto,
+    );
   }
 }

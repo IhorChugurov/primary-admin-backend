@@ -46,49 +46,45 @@ export class EnvironmentValuesService {
 
   async updateMany(
     projectId: string,
-    updateManyDto: UpdateManyEnvironmentValuesDto,
+    facilityId: string,
+    updateManyEnvironmentValuesDto: UpdateManyEnvironmentValuesDto,
   ): Promise<ResponseMessage> {
     const project = await this.projectsService.findOne(projectId);
-    const facility = await this.facilitiesService.findOne(updateManyDto.facilityId);
-    const { facilityId, items } = updateManyDto;
+    const facility = await this.facilitiesService.findOne(facilityId);
+    const { items } = updateManyEnvironmentValuesDto;
 
     for (const item of items) {
-      for (const [environmentId, value] of Object.entries(item)) {
-        const environment = await this.environmentsService.findOneWithRelations(
-          environmentId,
-          projectId,
-        );
+      const environment = await this.environmentsService.findOneWithRelations(item.key, projectId);
 
-        if (
-          !environment ||
-          !this.isValidValueType(environment.valueType, value) ||
-          environment.project.id !== projectId
-        ) {
-          continue;
-        }
+      if (
+        !environment ||
+        !this.isValidValueType(environment.valueType, item.value) ||
+        environment.project.id !== projectId
+      ) {
+        continue;
+      }
 
-        const environmentValue = await this.environmentValueRepository.findOneWithRelations(
-          environmentId,
-          facilityId,
+      const environmentValue = await this.environmentValueRepository.findOneWithRelations(
+        item.key,
+        facilityId,
+        projectId,
+        ["environment", "facility", "project"],
+      );
+
+      if (environmentValue) {
+        await this.environmentValueRepository.updateByIdWithRelations(
+          environmentValue.id,
+          item.value,
           projectId,
           ["environment", "facility", "project"],
         );
-
-        if (environmentValue) {
-          await this.environmentValueRepository.updateByIdWithRelations(
-            environmentValue.id,
-            value,
-            projectId,
-            ["environment", "facility", "project"],
-          );
-        } else {
-          await this.environmentValueRepository.createAndSave(
-            value,
-            environment,
-            facility,
-            project,
-          );
-        }
+      } else {
+        await this.environmentValueRepository.createAndSave(
+          item.value,
+          environment,
+          facility,
+          project,
+        );
       }
     }
     return {
