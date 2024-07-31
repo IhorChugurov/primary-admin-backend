@@ -1,12 +1,10 @@
-import { IsBoolean, IsDate, IsNumber, IsString } from "class-validator";
+import { IsString } from "class-validator";
+import { IsMultiType } from "../validators/multi-type.validator";
 
 export class EnvironmentValueItemDto {
   @IsString()
   key: string;
 
-  @IsBoolean()
-  @IsNumber()
-  @IsString()
-  @IsDate()
+  @IsMultiType({ message: "value must be a boolean, string, number, or Date" })
   value: boolean | string | number | Date;
 }

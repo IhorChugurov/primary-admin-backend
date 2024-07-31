@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  HttpStatus,
-  Param,
-  ParseUUIDPipe,
-  Post,
-  Query,
-} from "@nestjs/common";
+import { Body, Controller, Get, HttpStatus, Param, ParseUUIDPipe, Patch } from "@nestjs/common";
 import { EnvironmentValuesService } from "./environment-values.service";
 import { Roles } from "src/primary-users/authorization/decorators/primary-roles.decorator";
 import { ProjectId } from "src/projects/decorators/project-id.decorator";
@@ -33,7 +24,7 @@ export class EnvironmentValuesController {
     return this.environmentValuesService.findAll(projectId, facilityId);
   }
 
-  @Post(":id")
+  @Patch(":id")
   update(
     @ProjectId() projectId: string,
     @Param("id")
