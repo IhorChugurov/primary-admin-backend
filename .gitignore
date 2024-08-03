@@ -53,4 +53,3 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 #Other
 docker-compose.yml
-typeorm-cli.config.ts

@@ -22,9 +22,6 @@ import { TypeOrmModule } from "@nestjs/typeorm";
         autoLoadEntities: true,
         // Synchronize the database schema with the entities, every time the application starts.
         synchronize: false,
-        logger: "advanced-console",
-        poolSize: 20, // Adjust this value as needed
-        connectTimeoutMS: 10000,
       }),
     }),
   ],
