@@ -10,6 +10,7 @@ export class PrimaryRolesSeedService {
   constructor(private readonly primaryRolesService: PrimaryRolesService) {}
 
   async seedRoles(): Promise<PrimaryRole[]> {
+    this.logger.log("Starting primary role seeding process");
     const roles: PrimaryRole[] = [];
 
     const existingRoles = await this.primaryRolesService.findAll();

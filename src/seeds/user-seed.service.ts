@@ -13,13 +13,24 @@ export class UsersSeedService {
   ) {}
 
   async seedUser(): Promise<User> {
+    this.logger.log("Starting user seeding process");
     const userEmail = process.env.USER_EMAIL;
     const userPassword = process.env.USER_PASSWORD;
 
-    const existingUser = await this.usersService.findOneByEmail(userEmail);
+    this.logger.log(`Attempting to find user with email: ${userEmail}`);
+    let existingUser: User | null;
+    try {
+      existingUser = await this.usersService.findOneByEmail(userEmail);
+      this.logger.log(`User search result: ${existingUser ? "Found" : "Not found"}`);
+      this.logger.log(`${existingUser}`);
+    } catch (error: any) {
+      this.logger.error(`Error finding user: ${error.message}`, error.stack);
+      throw error;
+    }
 
     if (!existingUser) {
       // Creating a new user
+      this.logger.log("Creating new user");
       const newUser = await this.usersService.createDefaultUser({
         email: userEmail,
         password: userPassword,
@@ -27,6 +38,7 @@ export class UsersSeedService {
       this.logger.log(`User #${userEmail} has been created.`);
       return newUser;
     } else {
+      this.logger.log("Checking password for existing user");
       const passwordMatches = await this.hashingService.compare(
         userPassword,
         existingUser.password,

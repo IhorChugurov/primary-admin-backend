@@ -1,15 +1,17 @@
-import * as Joi from "@hapi/joi";
+import Joi from "joi";
 
 export const validationSchema = Joi.object({
   USER_EMAIL: Joi.string().required(),
   USER_PASSWORD: Joi.string().required(),
   PORT: Joi.number().default(3000),
-  DB_HOST: Joi.string().required(),
-  DB_PORT: Joi.number().default(5432),
   DB_USER: Joi.string().required(),
   DB_PASSWORD: Joi.string().required(),
   DB_NAME: Joi.string().required(),
+  DB_PORT: Joi.number().default(5432),
+  DB_HOST: Joi.string().required(),
   DB_SYNC: Joi.boolean().default(false),
+  DB_MIGRATION: Joi.boolean().default(true),
+  DB_LOG: Joi.boolean().default(false),
   JWT_SECRET: Joi.string().required(),
   JWT_TOKEN_AUDIENCE: Joi.string().required(),
   JWT_TOKEN_ISSUER: Joi.string().required(),

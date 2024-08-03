@@ -16,17 +16,16 @@ import { FacilitiesModule } from "./facilities/facilities.module";
 import { GroupsModule } from "./groups/groups.module";
 import { GroupRolesModule } from "./group-roles/group-roles.module";
 import { FacilityRolesModule } from "./facility-roles/facility-roles.module";
-import { GroupUsersModule } from './group-users/group-users.module';
-import { FacilityUsersModule } from './facility-users/facility-users.module';
-import { EnvironmentsModule } from './environments/environments.module';
-import { EnvironmentValuesModule } from './environment-values/environment-values.module';
+import { GroupUsersModule } from "./group-users/group-users.module";
+import { FacilityUsersModule } from "./facility-users/facility-users.module";
+import { EnvironmentsModule } from "./environments/environments.module";
+import { EnvironmentValuesModule } from "./environment-values/environment-values.module";
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       validationSchema: validationSchema,
       load: [appConfig, dbConfig],
-      envFilePath: `.env.${process.env.NODE_ENV || "development"}`,
     }),
     DatabaseModule,
     IamModule,
