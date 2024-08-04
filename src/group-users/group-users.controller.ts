@@ -9,6 +9,7 @@ import { PaginationDto } from "src/common/dto/pagination.dto";
 import { ResponseMessage } from "src/common/interfaces/response-message.interface";
 import { ProjectId } from "src/projects/decorators/project-id.decorator";
 import { GroupUserListDto } from "./dto/group-user-list.dto";
+import { GroupUserQueryDto } from "./dto/group-user-query.dto";
 
 @Roles("SuperAdmin", "Admin")
 @Controller("group-users")
@@ -28,8 +29,9 @@ export class GroupUsersController {
   findMany(
     @Query() paginationOptionsDto: PaginationOptionsDto,
     @ProjectId() projectId: string,
+    @Query() query: GroupUserQueryDto,
   ): Promise<PaginationDto<GroupUserListDto>> {
-    return this.groupUsersService.findMany(paginationOptionsDto, projectId);
+    return this.groupUsersService.findMany(paginationOptionsDto, projectId, query);
   }
 
   @UseDto(GroupUserDto)

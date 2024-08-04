@@ -18,6 +18,7 @@ export class GroupsService {
   create(createGroupDto: CreateGroupDto): Promise<GroupDto> {
     return this.groupRepository.createAndSave(createGroupDto);
   }
+
   async createWithRelations(createGroupDto: CreateGroupDto): Promise<GroupFacilitiesDto> {
     const group = await this.groupRepository.createAndSave(createGroupDto);
     return { ...group, facilities: [], facilitiesQty: 0 };

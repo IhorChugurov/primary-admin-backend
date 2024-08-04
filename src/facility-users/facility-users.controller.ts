@@ -9,6 +9,7 @@ import { PaginationOptionsDto } from "src/common/dto/pagination-options.dto";
 import { PaginationDto } from "src/common/dto/pagination.dto";
 import { ResponseMessage } from "src/common/interfaces/response-message.interface";
 import { FacilityUserListDto } from "./dto/facility-user-list.dto";
+import { FacilityUserQueryDto } from "./dto/faciltiy-user-query.dto";
 
 @Roles("SuperAdmin", "Admin")
 @Controller("facility-users")
@@ -28,8 +29,9 @@ export class FacilityUsersController {
   findMany(
     @Query() paginationOptionsDto: PaginationOptionsDto,
     @ProjectId() projectId: string,
+    @Query() query: FacilityUserQueryDto,
   ): Promise<PaginationDto<FacilityUserListDto>> {
-    return this.facilityUsersService.findMany(paginationOptionsDto, projectId);
+    return this.facilityUsersService.findMany(paginationOptionsDto, projectId, query);
   }
 
   @UseDto(FacilityUserDto)

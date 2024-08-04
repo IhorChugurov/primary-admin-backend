@@ -59,6 +59,7 @@ export class GroupUserRepository extends Repository<GroupUser> {
   async findManyWithPaginationAndRelations(
     paginationOptionsDto: PaginationOptionsDto,
     projectId: string,
+    groupId: string,
   ): Promise<{ entities: GroupUser[]; totalItems: number }> {
     const queryBuilder = this.createQueryBuilder("groupUser");
 
@@ -68,6 +69,7 @@ export class GroupUserRepository extends Repository<GroupUser> {
       .leftJoinAndSelect("groupUser.groupRole", "groupRole")
       .leftJoinAndSelect("groupUser.project", "project")
       .where("project.id = :projectId", { projectId })
+      .andWhere("group.id = :groupId", { groupId })
       .orderBy("groupUser.createdAt", paginationOptionsDto.order)
       .skip(paginationOptionsDto.skip)
       .take(paginationOptionsDto.perPage);

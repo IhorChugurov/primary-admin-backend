@@ -59,6 +59,7 @@ export class FacilityUserRepository extends Repository<FacilityUser> {
   async findManyWithPaginationAndRelations(
     paginationOptionsDto: PaginationOptionsDto,
     projectId: string,
+    facilityId: string,
   ): Promise<{ entities: FacilityUser[]; totalItems: number }> {
     const queryBuilder = this.createQueryBuilder("facilityUser");
 
@@ -68,6 +69,7 @@ export class FacilityUserRepository extends Repository<FacilityUser> {
       .leftJoinAndSelect("facilityUser.facilityRole", "facilityRole")
       .leftJoinAndSelect("facilityUser.project", "project")
       .where("project.id = :projectId", { projectId })
+      .andWhere("facility.id = :facilityId", { facilityId })
       .orderBy("facilityUser.createdAt", paginationOptionsDto.order)
       .skip(paginationOptionsDto.skip)
       .take(paginationOptionsDto.perPage);

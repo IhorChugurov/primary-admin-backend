@@ -13,6 +13,7 @@ import { CreateFacilityUserDto } from "./dto/create-facility-user.dto";
 import { FacilityUser } from "./entities/facility-user.entity";
 import { FacilityUserListDto } from "./dto/facility-user-list.dto";
 import { predefinedFacilityRoles } from "src/facility-roles/constants/facility-roles.constant";
+import { FacilityUserQueryDto } from "./dto/faciltiy-user-query.dto";
 
 @Injectable()
 export class FacilityUsersService {
@@ -33,22 +34,24 @@ export class FacilityUsersService {
     const adminFacilityRole = predefinedFacilityRoles.find(
       (facilityRole) => facilityRole.name === "Admin",
     );
+    const project = await this.projectsService.findOne(projectId);
     const facilityRole = await this.facilityRolesService.findOneByName(
       adminFacilityRole.name,
       projectId,
     );
-    const project = await this.projectsService.findOne(projectId);
     return this.facilityUserRepository.createAndSave(user, facility, facilityRole, project);
   }
 
   async findMany(
     paginationOptionsDto: PaginationOptionsDto,
     projectId: string,
+    query: FacilityUserQueryDto,
   ): Promise<PaginationDto<FacilityUserListDto>> {
     const { entities, totalItems } =
       await this.facilityUserRepository.findManyWithPaginationAndRelations(
         paginationOptionsDto,
         projectId,
+        query.facilityId,
       );
 
     const facilityUserDtos = plainToInstance(FacilityUserListDto, entities, {

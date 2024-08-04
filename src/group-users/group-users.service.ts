@@ -13,6 +13,7 @@ import { CreateGroupUserDto } from "./dto/create-group-user.dto";
 import { GroupUser } from "./entities/group-user.entity";
 import { GroupUserListDto } from "./dto/group-user-list.dto";
 import { predefinedGroupRoles } from "src/group-roles/constants/group-roles.constant";
+import { GroupUserQueryDto } from "./dto/group-user-query.dto";
 
 @Injectable()
 export class GroupUsersService {
@@ -27,20 +28,22 @@ export class GroupUsersService {
   async create(createGroupUserDto: CreateGroupUserDto, projectId: string): Promise<GroupUser> {
     const user = await this.usersService.findOrCreate(createGroupUserDto.email);
     const group = await this.groupsService.findOne(createGroupUserDto.groupId);
+    const project = await this.projectsService.findOne(projectId);
     const adminGroupRole = predefinedGroupRoles.find((groupRole) => groupRole.name === "Admin");
     const groupRole = await this.groupRolesService.findOneByName(adminGroupRole.name, projectId);
-    const project = await this.projectsService.findOne(projectId);
     return this.groupUserRepository.createAndSave(user, group, groupRole, project);
   }
 
   async findMany(
     paginationOptionsDto: PaginationOptionsDto,
     projectId: string,
+    query: GroupUserQueryDto,
   ): Promise<PaginationDto<GroupUserListDto>> {
     const { entities, totalItems } =
       await this.groupUserRepository.findManyWithPaginationAndRelations(
         paginationOptionsDto,
         projectId,
+        query.groupId,
       );
 
     const groupUserDtos = plainToInstance(GroupUserListDto, entities, {
