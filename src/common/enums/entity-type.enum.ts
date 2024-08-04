@@ -1,0 +1,13 @@
+export enum EntityType {
+  PROJECT = "Project",
+  GROUP_USER = "Group admin",
+  FACILITY = "Facility",
+  GROUP = "Group",
+  GROUP_ROLE = "Group role",
+  ENVIRONMENT = "Environment",
+  PRIMARY_USER = "Admin user",
+  FACILITY_ROLE = "Facility role",
+  FACILITY_USER = "Facility admin",
+  ENVIRONMENT_VALUE = "Environment value",
+  PRIMARY_ROLE = "Primary role",
+}

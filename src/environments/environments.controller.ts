@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from "@nestjs/common";
+import { Controller, Get, Post, Body, Patch, Delete, Query } from "@nestjs/common";
 import { EnvironmentsService } from "./environments.service";
 import { CreateEnvironmentDto } from "./dto/create-environment.dto";
 import { UpdateEnvironmentDto } from "./dto/update-environment.dto";
@@ -6,12 +6,16 @@ import { EnvironmentRelationsDto } from "./dto/environment-relations.dto";
 import { Roles } from "src/primary-users/authorization/decorators/primary-roles.decorator";
 import { UseDto } from "src/common/decorators/dto.decorator";
 import { PaginationOptionsDto } from "src/common/dto/pagination-options.dto";
-import { ProjectId } from "src/projects/decorators/project-id.decorator";
 import { PaginationDto } from "src/common/dto/pagination.dto";
 import { EnvironmentListDto } from "./dto/environment-list.dto";
 import { ResponseMessage } from "src/common/interfaces/response-message.interface";
+import { EntityType } from "src/common/enums/entity-type.enum";
+import { EntityTypeController } from "src/common/decorators/entity-type-controller.decorator";
+import { ProjectId } from "src/common/decorators/project-id-header.decorator";
+import { UUIDParam } from "src/common/decorators/uuid-param.decorator";
 
 @Roles("SuperAdmin", "Admin")
+@EntityTypeController(EntityType.ENVIRONMENT)
 @Controller("environments")
 export class EnvironmentsController {
   constructor(private readonly environmentsService: EnvironmentsService) {}
@@ -36,7 +40,7 @@ export class EnvironmentsController {
   @UseDto(EnvironmentRelationsDto)
   @Get(":id")
   findOne(
-    @Param("id") environmentId: string,
+    @UUIDParam() environmentId: string,
     @ProjectId() projectId: string,
   ): Promise<EnvironmentRelationsDto> {
     return this.environmentsService.findOneWithRelations(environmentId, projectId);
@@ -45,7 +49,7 @@ export class EnvironmentsController {
   @UseDto(EnvironmentRelationsDto)
   @Patch(":id")
   update(
-    @Param("id") environmentId: string,
+    @UUIDParam() environmentId: string,
     @Body() updateEnvironmentDto: UpdateEnvironmentDto,
     @ProjectId() projectId: string,
   ): Promise<EnvironmentRelationsDto> {
@@ -54,7 +58,7 @@ export class EnvironmentsController {
 
   @Delete(":id")
   remove(
-    @Param("id") environmentId: string,
+    @UUIDParam() environmentId: string,
     @ProjectId() projectId: string,
   ): Promise<ResponseMessage> {
     return this.environmentsService.remove(environmentId, projectId);

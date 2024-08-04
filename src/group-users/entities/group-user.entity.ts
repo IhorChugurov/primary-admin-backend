@@ -3,7 +3,7 @@ import { GroupRole } from "src/group-roles/entities/group-role.entity";
 import { Group } from "src/groups/entities/group.entity";
 import { Project } from "src/projects/entities/project.entity";
 import { User } from "src/users/entities/user.entity";
-import { Entity, JoinColumn, ManyToOne, Unique } from "typeorm";
+import { Entity, ManyToOne, Unique } from "typeorm";
 
 @Entity()
 @Unique(["user", "group", "project"])

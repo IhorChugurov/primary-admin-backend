@@ -54,7 +54,7 @@ export class PrimaryUsersService {
       "primaryRole",
     ]);
     if (!primaryUser) {
-      throw new NotFoundException(`User with ID #${primaryUserId} not found`);
+      throw new NotFoundException(`Admin user with ID #${primaryUserId} not found`);
     }
     return primaryUser;
   }
@@ -68,7 +68,7 @@ export class PrimaryUsersService {
       relations,
     );
     if (!primaryUser) {
-      throw new NotFoundException(`User with ID #${userId} not found`);
+      throw new NotFoundException(`Admin user with ID #${userId} not found`);
     }
     return primaryUser;
   }
@@ -77,7 +77,7 @@ export class PrimaryUsersService {
     // TODO Can't delete super admin
     const primaryUser = await this.primaryUserRepository.findOneByID(primaryUserId);
     if (!primaryUser) {
-      throw new NotFoundException(`User with ID #${primaryUserId} not found`);
+      throw new NotFoundException(`Admin user with ID #${primaryUserId} not found`);
     }
     await this.primaryUserRepository.removeByEntity(primaryUser);
     return {

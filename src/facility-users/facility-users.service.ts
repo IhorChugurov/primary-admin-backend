@@ -13,7 +13,6 @@ import { CreateFacilityUserDto } from "./dto/create-facility-user.dto";
 import { FacilityUser } from "./entities/facility-user.entity";
 import { FacilityUserListDto } from "./dto/facility-user-list.dto";
 import { predefinedFacilityRoles } from "src/facility-roles/constants/facility-roles.constant";
-import { FacilityUserQueryDto } from "./dto/faciltiy-user-query.dto";
 
 @Injectable()
 export class FacilityUsersService {
@@ -45,13 +44,13 @@ export class FacilityUsersService {
   async findMany(
     paginationOptionsDto: PaginationOptionsDto,
     projectId: string,
-    query: FacilityUserQueryDto,
+    facilityId: string,
   ): Promise<PaginationDto<FacilityUserListDto>> {
     const { entities, totalItems } =
       await this.facilityUserRepository.findManyWithPaginationAndRelations(
         paginationOptionsDto,
         projectId,
-        query.facilityId,
+        facilityId,
       );
 
     const facilityUserDtos = plainToInstance(FacilityUserListDto, entities, {

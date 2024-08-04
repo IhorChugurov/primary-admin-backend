@@ -1,6 +1,6 @@
 export const predefinedProjects = [
   {
     name: "Templates",
-    description: "Templates apploications",
+    description: "Templates application",
   },
 ];

@@ -13,7 +13,6 @@ import { CreateGroupUserDto } from "./dto/create-group-user.dto";
 import { GroupUser } from "./entities/group-user.entity";
 import { GroupUserListDto } from "./dto/group-user-list.dto";
 import { predefinedGroupRoles } from "src/group-roles/constants/group-roles.constant";
-import { GroupUserQueryDto } from "./dto/group-user-query.dto";
 
 @Injectable()
 export class GroupUsersService {
@@ -37,13 +36,13 @@ export class GroupUsersService {
   async findMany(
     paginationOptionsDto: PaginationOptionsDto,
     projectId: string,
-    query: GroupUserQueryDto,
+    groupId: string,
   ): Promise<PaginationDto<GroupUserListDto>> {
     const { entities, totalItems } =
       await this.groupUserRepository.findManyWithPaginationAndRelations(
         paginationOptionsDto,
         projectId,
-        query.groupId,
+        groupId,
       );
 
     const groupUserDtos = plainToInstance(GroupUserListDto, entities, {

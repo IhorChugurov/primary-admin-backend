@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from "@nestjs/common";
+import { Controller, Get, Post, Body, Delete, Query } from "@nestjs/common";
 import { PrimaryUsersService } from "./primary-users.service";
 import { CreatePrimaryUserDto } from "./dto/create-primary-user.dto";
 import { Roles } from "./authorization/decorators/primary-roles.decorator";
@@ -8,8 +8,12 @@ import { PrimaryUserDto } from "./dto/primary-user.dto";
 import { PaginationDto } from "src/common/dto/pagination.dto";
 import { ResponseMessage } from "src/common/interfaces/response-message.interface";
 import { PrimaryUserListDto } from "./dto/primary-user-list.dto";
+import { EntityTypeController } from "src/common/decorators/entity-type-controller.decorator";
+import { EntityType } from "src/common/enums/entity-type.enum";
+import { UUIDParam } from "src/common/decorators/uuid-param.decorator";
 
 @Roles("SuperAdmin", "Admin")
+@EntityTypeController(EntityType.PRIMARY_USER)
 @Controller("primary-users")
 export class PrimaryUsersController {
   constructor(private readonly primaryUsersService: PrimaryUsersService) {}
@@ -30,12 +34,12 @@ export class PrimaryUsersController {
 
   @UseDto(PrimaryUserDto)
   @Get(":id")
-  findOne(@Param("id") primaryUserId: string): Promise<PrimaryUserDto> {
+  findOne(@UUIDParam() primaryUserId: string): Promise<PrimaryUserDto> {
     return this.primaryUsersService.findOne(primaryUserId);
   }
 
   @Delete(":id")
-  remove(@Param("id") primaryUserId: string): Promise<ResponseMessage> {
+  remove(@UUIDParam() primaryUserId: string): Promise<ResponseMessage> {
     return this.primaryUsersService.remove(primaryUserId);
   }
 }
