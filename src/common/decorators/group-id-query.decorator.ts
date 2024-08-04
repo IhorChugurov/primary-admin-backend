@@ -14,7 +14,7 @@ import { EntityType } from "../enums/entity-type.enum";
  */
 export const GroupId = createParamDecorator((data: unknown, ctx: ExecutionContext) => {
   const request = ctx.switchToHttp().getRequest();
-  const groupId = request.query.groupId;
+  const groupId = request.query.groupid;
   return new CustomUUIDPipe(EntityType.GROUP).transform(groupId, {
     type: "query",
     metatype: String,
