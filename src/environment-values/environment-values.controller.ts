@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Patch, Post } from "@nestjs/common";
 import { EnvironmentValuesService } from "./environment-values.service";
 import { Roles } from "src/primary-users/authorization/decorators/primary-roles.decorator";
 import { EnvironmentValueListDto } from "./dto/environment-value-list.dto";
@@ -9,6 +9,7 @@ import { EntityType } from "src/common/enums/entity-type.enum";
 import { EntityTypeController } from "src/common/decorators/entity-type-controller.decorator";
 import { ProjectId } from "src/common/decorators/project-id-header.decorator";
 import { FacilityId } from "src/common/decorators/facility-id-query.decorator";
+import { UUIDParam } from "src/common/decorators/uuid-param.decorator";
 
 @Roles("SuperAdmin", "Admin")
 @EntityTypeController(EntityType.ENVIRONMENT_VALUE)
@@ -33,11 +34,11 @@ export class EnvironmentValuesController {
     return this.environmentValuesService.findMany(projectId);
   }
 
-  @Post()
+  @Patch(":id")
   updateManyFacilityEnvironmentValues(
     @ProjectId() projectId: string,
     @Body() updateManyEnvironmentValuesDto: UpdateManyEnvironmentValuesDto,
-    @FacilityId({ required: false }) facilityId?: string,
+    @UUIDParam() facilityId?: string,
   ): Promise<ResponseMessage> {
     return this.environmentValuesService.updateMany(
       projectId,
