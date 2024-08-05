@@ -1,4 +1,4 @@
-import { Repository } from "typeorm";
+import { IsNull, Repository } from "typeorm";
 import { Injectable } from "@nestjs/common";
 import { DataSource } from "typeorm";
 import { InjectDataSource } from "@nestjs/typeorm";
@@ -18,28 +18,35 @@ export class EnvironmentValueRepository extends Repository<EnvironmentValue> {
   async createAndSave(
     value: any,
     environment: Environment,
-    facility: Facility,
     project: Project,
+    facility?: Facility,
   ): Promise<EnvironmentValue> {
     const newEnvironmentValue = this.create({
       value,
       environment,
-      facility,
       project,
+      facility: facility || null,
     });
     try {
       await this.save(newEnvironmentValue);
     } catch (err) {
       handleDatabaseErrors(err, EntityKeys.ENVIRONMENT_VALUE);
     }
-    return this.findOneByIdWithRelations(newEnvironmentValue.id, project.id, [
-      "environment",
-      "facility",
-      "project",
-    ]);
+    if (facility) {
+      return this.findOneByIdWithRelations(newEnvironmentValue.id, project.id, [
+        "environment",
+        "facility",
+        "project",
+      ]);
+    } else {
+      return this.findOneByIdWithRelations(newEnvironmentValue.id, project.id, [
+        "environment",
+        "project",
+      ]);
+    }
   }
 
-  findAllWithRelations(
+  findAllFacilityValuesWithRelations(
     projectId: string,
     facilityId: string,
     relations: string[] = [],
@@ -50,7 +57,17 @@ export class EnvironmentValueRepository extends Repository<EnvironmentValue> {
     });
   }
 
-  findOneWithRelations(
+  findAllProjectValuesWithRelations(
+    projectId: string,
+    relations: string[] = [],
+  ): Promise<EnvironmentValue[]> {
+    return this.find({
+      where: { project: { id: projectId }, facility: IsNull() },
+      relations,
+    });
+  }
+
+  findOneFacilityValueWithRelations(
     environmentId: string,
     facilityId: string,
     projectId: string,
@@ -60,6 +77,21 @@ export class EnvironmentValueRepository extends Repository<EnvironmentValue> {
       where: {
         environment: { id: environmentId },
         facility: { id: facilityId },
+        project: { id: projectId },
+      },
+      relations,
+    });
+  }
+
+  findOneProjectValueWithRelations(
+    environmentId: string,
+    projectId: string,
+    relations: string[] = [],
+  ): Promise<EnvironmentValue> {
+    return this.findOne({
+      where: {
+        environment: { id: environmentId },
+        facility: IsNull(),
         project: { id: projectId },
       },
       relations,

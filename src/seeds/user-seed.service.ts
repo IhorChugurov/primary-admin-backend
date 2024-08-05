@@ -1,7 +1,9 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { Inject, Injectable, Logger } from "@nestjs/common";
 import { HashingService } from "src/shared/hashing/hashing.service";
 import { User } from "src/users/entities/user.entity";
 import { UsersService } from "src/users/users.service";
+import initUserConfig from "../config/initial-user.config";
+import { ConfigType } from "@nestjs/config";
 
 @Injectable()
 export class UsersSeedService {
@@ -10,12 +12,14 @@ export class UsersSeedService {
   constructor(
     private readonly usersService: UsersService,
     private readonly hashingService: HashingService,
+    @Inject(initUserConfig.KEY)
+    private readonly initUserConfiguration: ConfigType<typeof initUserConfig>,
   ) {}
 
   async seedUser(): Promise<User> {
     this.logger.log("Starting user seeding process");
-    const userEmail = process.env.USER_EMAIL;
-    const userPassword = process.env.USER_PASSWORD;
+    const userEmail = this.initUserConfiguration.email;
+    const userPassword = this.initUserConfiguration.password;
 
     this.logger.log(`Attempting to find user with email: ${userEmail}`);
     let existingUser: User | null;

@@ -17,15 +17,30 @@ export class EnvironmentValuesService {
     private readonly projectsService: ProjectsService,
     private readonly facilitiesService: FacilitiesService,
   ) {}
-  async findAll(projectId: string, facilityId: string) {
+  async findAll(projectId: string, facilityId?: string) {
     await this.projectsService.findOne(projectId);
-    await this.facilitiesService.findOne(facilityId);
-    const environments = await this.environmentsService.findAllFirstAdminEnvironments(projectId);
-    const environmentValues = await this.environmentValueRepository.findAllWithRelations(
-      projectId,
-      facilityId,
-      ["environment", "facility", "project"],
-    );
+    if (facilityId) {
+      await this.facilitiesService.findOne(facilityId);
+    }
+    let environments;
+    if (facilityId) {
+      environments = await this.environmentsService.findAllFirstAdminEnvironments(projectId);
+    } else {
+      environments = await this.environmentsService.findAllProjectEnvironments(projectId);
+    }
+    let environmentValues;
+    if (facilityId) {
+      environmentValues = await this.environmentValueRepository.findAllFacilityValuesWithRelations(
+        projectId,
+        facilityId,
+        ["environment", "facility", "project"],
+      );
+    } else {
+      environmentValues = await this.environmentValueRepository.findAllProjectValuesWithRelations(
+        projectId,
+        ["environment", "project"],
+      );
+    }
     const environmentValueMap = new Map<string, EnvironmentValue>();
     environmentValues.forEach((envValue) => {
       environmentValueMap.set(envValue.environment.id, envValue);
@@ -46,44 +61,60 @@ export class EnvironmentValuesService {
 
   async updateMany(
     projectId: string,
-    facilityId: string,
     updateManyEnvironmentValuesDto: UpdateManyEnvironmentValuesDto,
+    facilityId?: string,
   ): Promise<ResponseMessage> {
     const project = await this.projectsService.findOne(projectId);
-    const facility = await this.facilitiesService.findOne(facilityId);
+    let facility;
+    if (facilityId) {
+      facility = await this.facilitiesService.findOne(facilityId);
+    }
     const { items } = updateManyEnvironmentValuesDto;
 
     for (const item of items) {
       const environment = await this.environmentsService.findOneWithRelations(item.key, projectId);
 
-      if (
-        !environment ||
-        !this.isValidValueType(environment.valueType, item.value) ||
-        environment.project.id !== projectId
-      ) {
+      if (!environment || !this.isValidValueType(environment.valueType, item.value)) {
         continue;
       }
-
-      const environmentValue = await this.environmentValueRepository.findOneWithRelations(
-        item.key,
-        facilityId,
-        projectId,
-        ["environment", "facility", "project"],
-      );
-
-      if (environmentValue) {
-        await this.environmentValueRepository.updateByIdWithRelations(
-          environmentValue.id,
-          item.value,
+      let environmentValue;
+      if (facilityId) {
+        environmentValue = await this.environmentValueRepository.findOneFacilityValueWithRelations(
+          item.key,
+          facilityId,
           projectId,
           ["environment", "facility", "project"],
         );
       } else {
+        environmentValue = await this.environmentValueRepository.findOneProjectValueWithRelations(
+          item.key,
+          projectId,
+          ["environment", "project"],
+        );
+      }
+
+      if (environmentValue) {
+        if (facilityId) {
+          await this.environmentValueRepository.updateByIdWithRelations(
+            environmentValue.id,
+            item.value,
+            projectId,
+            ["environment", "facility", "project"],
+          );
+        } else {
+          await this.environmentValueRepository.updateByIdWithRelations(
+            environmentValue.id,
+            item.value,
+            projectId,
+            ["environment", "project"],
+          );
+        }
+      } else {
         await this.environmentValueRepository.createAndSave(
           item.value,
           environment,
-          facility,
           project,
+          facility,
         );
       }
     }

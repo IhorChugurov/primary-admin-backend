@@ -1,1774 +1,2104 @@
 {
-  "info": {
-    "_postman_id": "0bb09b4b-35c4-4999-a0a5-8f4c131a1d58",
-    "name": "Templates Administration",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "20080903",
-    "_collection_link": "https://bamboo-strategic-media.postman.co/workspace/Bamboo~d967b806-9939-4c1d-9f69-77310643d7b0/collection/20080903-0bb09b4b-35c4-4999-a0a5-8f4c131a1d58?action=share&source=collection_link&creator=20080903"
-  },
-  "item": [
-    {
-      "name": "Auth",
-      "item": [
-        {
-          "name": "Sign-up",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{host}}/authentication/sign-up",
-              "host": ["{{host}}"],
-              "path": ["authentication", "sign-up"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Sign-in",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": ["if (pm.response.code >= 200 && pm.response.code < 300) {\r", "    pm.collectionVariables.set(\"accessToken\", pm.response.json().accessToken)\r", "    pm.collectionVariables.set(\"refreshToken\", pm.response.json().refreshToken)\r", "}"],
-                "type": "text/javascript",
-                "packages": {}
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{host}}/authentication/sign-in",
-              "host": ["{{host}}"],
-              "path": ["authentication", "sign-in"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Refresh tokens",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": ["if (pm.response.code >= 200 && pm.response.code < 300) {\r", "    pm.collectionVariables.set(\"accessToken\", pm.response.json().accessToken)\r", "    pm.collectionVariables.set(\"refreshToken\", pm.response.json().refreshToken)\r", "}"],
-                "type": "text/javascript",
-                "packages": {}
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"refreshToken\": \"{{refreshToken}}\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{host}}/authentication/refresh-tokens",
-              "host": ["{{host}}"],
-              "path": ["authentication", "refresh-tokens"]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "Primary Roles",
-      "item": [
-        {
-          "name": "Find all Primary Roles",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{host}}/primary-roles",
-              "host": ["{{host}}"],
-              "path": ["primary-roles"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Find one Primary Role",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{host}}/primary-roles/{{primaryRoleId}}",
-              "host": ["{{host}}"],
-              "path": ["primary-roles", "{{primaryRoleId}}"]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "Users",
-      "item": [
-        {
-          "name": "Get profile data",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{host}}/users/profile",
-              "host": ["{{host}}"],
-              "path": ["users", "profile"]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "Primary Users",
-      "item": [
-        {
-          "name": "Create Primary User",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": ["if (pm.response.code >= 200 && pm.response.code < 300) {\r", "    pm.collectionVariables.set(\"primaryUserId\", pm.response.json().id)\r", "}"],
-                "type": "text/javascript",
-                "packages": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"email\": \"user@gmail.com\",\r\n    \"primaryRoleId\": \"{{primaryRoleId}}\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{host}}/primary-users",
-              "host": ["{{host}}"],
-              "path": ["primary-users"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Find all Primary Users",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{host}}/primary-users?currentPage=1&perPage=2&search=",
-              "host": ["{{host}}"],
-              "path": ["primary-users"],
-              "query": [
-                {
-                  "key": "currentPage",
-                  "value": "1"
-                },
-                {
-                  "key": "perPage",
-                  "value": "2"
-                },
-                {
-                  "key": "search",
-                  "value": ""
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Find one Primary User",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{host}}/primary-users/{{primaryUserId}}",
-              "host": ["{{host}}"],
-              "path": ["primary-users", "{{primaryUserId}}"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Update one Primary User",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [""],
-                "type": "text/javascript",
-                "packages": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "PATCH",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"primaryRoleId\": \"{{primaryRoleId}}\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{host}}/primary-users/{{primaryUserId}}",
-              "host": ["{{host}}"],
-              "path": ["primary-users", "{{primaryUserId}}"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Delete one Primary User",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [""],
-                "type": "text/javascript",
-                "packages": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{host}}/primary-users/{{primaryUserId}}",
-              "host": ["{{host}}"],
-              "path": ["primary-users", "{{primaryUserId}}"]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "Projects",
-      "item": [
-        {
-          "name": "Create Project",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": ["if (pm.response.code >= 200 && pm.response.code < 300) {\r", "    pm.collectionVariables.set(\"projectId\", pm.response.json().id)\r", "}"],
-                "type": "text/javascript",
-                "packages": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"Project #6\",\r\n    \"description\": \"Best project\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{host}}/projects",
-              "host": ["{{host}}"],
-              "path": ["projects"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Find all Projects",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{host}}/projects",
-              "host": ["{{host}}"],
-              "path": ["projects"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Find one Project",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{host}}/projects/{{projectId}}",
-              "host": ["{{host}}"],
-              "path": ["projects", "{{projectId}}"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Update one Project",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [""],
-                "type": "text/javascript",
-                "packages": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "PATCH",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"Project #2\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{host}}/projects/{{projectId}}",
-              "host": ["{{host}}"],
-              "path": ["projects", "{{projectId}}"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Delete one Project",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [""],
-                "type": "text/javascript",
-                "packages": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{host}}/projects/{{projectId}}",
-              "host": ["{{host}}"],
-              "path": ["projects", "{{projectId}}"]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "Groups",
-      "item": [
-        {
-          "name": "Create Group",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": ["if (pm.response.code >= 200 && pm.response.code < 300) {\r", "    pm.collectionVariables.set(\"groupId\", pm.response.json().id)\r", "}"],
-                "type": "text/javascript",
-                "packages": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"Group #6\",\r\n    \"description\": \"Best group\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{host}}/groups",
-              "host": ["{{host}}"],
-              "path": ["groups"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Find all Groups",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{host}}/groups",
-              "host": ["{{host}}"],
-              "path": ["groups"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Find one Group",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{host}}/groups/{{groupId}}",
-              "host": ["{{host}}"],
-              "path": ["groups", "{{groupId}}"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Update one Group",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [""],
-                "type": "text/javascript",
-                "packages": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "PATCH",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"Group #1\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{host}}/groups/{{groupId}}",
-              "host": ["{{host}}"],
-              "path": ["groups", "{{groupId}}"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Delete one Project",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [""],
-                "type": "text/javascript",
-                "packages": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{host}}/projects/{{projectId}}",
-              "host": ["{{host}}"],
-              "path": ["projects", "{{projectId}}"]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "Facilities",
-      "item": [
-        {
-          "name": "Create Facility",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": ["if (pm.response.code >= 200 && pm.response.code < 300) {\r", "    pm.collectionVariables.set(\"facilityId\", pm.response.json().id)\r", "}"],
-                "type": "text/javascript",
-                "packages": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"Facility #7\",\r\n    \"description\": \"Best facility\",\r\n    \"groupId\": \"{{groupId}}\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{host}}/facilities",
-              "host": ["{{host}}"],
-              "path": ["facilities"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Find all Facilities",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{host}}/facilities?groupId={{groupId}}",
-              "host": ["{{host}}"],
-              "path": ["facilities"],
-              "query": [
-                {
-                  "key": "groupId",
-                  "value": "{{groupId}}"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Find one Group",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{host}}/facilities/{{facilityId}}",
-              "host": ["{{host}}"],
-              "path": ["facilities", "{{facilityId}}"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Update one Facility",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [""],
-                "type": "text/javascript",
-                "packages": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "PATCH",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"Facility #3\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{host}}/facilities/{{facilityId}}",
-              "host": ["{{host}}"],
-              "path": ["facilities", "{{facilityId}}"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Delete one Facility",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [""],
-                "type": "text/javascript",
-                "packages": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{host}}/facilities/{{facilityId}}",
-              "host": ["{{host}}"],
-              "path": ["facilities", "{{facilityId}}"]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "Group Roles",
-      "item": [
-        {
-          "name": "Find all Group Roles",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [
-              {
-                "key": "projectId",
-                "value": "{{projectId}}",
-                "type": "text"
-              }
-            ],
-            "url": {
-              "raw": "{{host}}/group-roles",
-              "host": ["{{host}}"],
-              "path": ["group-roles"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Find one Group Role",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [
-              {
-                "key": "projectId",
-                "value": "{{projectId}}",
-                "type": "text"
-              }
-            ],
-            "url": {
-              "raw": "{{host}}/group-roles/{{groupRoleId}}",
-              "host": ["{{host}}"],
-              "path": ["group-roles", "{{groupRoleId}}"]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "Facility Roles",
-      "item": [
-        {
-          "name": "Find all Facility Roles",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [
-              {
-                "key": "projectId",
-                "value": "{{projectId}}",
-                "type": "text"
-              }
-            ],
-            "url": {
-              "raw": "{{host}}/facility-roles",
-              "host": ["{{host}}"],
-              "path": ["facility-roles"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Find one Facility Role",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [
-              {
-                "key": "projectId",
-                "value": "{{projectId}}",
-                "type": "text"
-              }
-            ],
-            "url": {
-              "raw": "{{host}}/facility-roles/{{facilityRoleId}}",
-              "host": ["{{host}}"],
-              "path": ["facility-roles", "{{facilityRoleId}}"]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "Group Users",
-      "item": [
-        {
-          "name": "Create Group User",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": ["if (pm.response.code >= 200 && pm.response.code < 300) {\r", "    pm.collectionVariables.set(\"groupUserId\", pm.response.json().id)\r", "}"],
-                "type": "text/javascript",
-                "packages": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [
-              {
-                "key": "projectId",
-                "value": "{{projectId}}",
-                "type": "text"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"email\": \"user@gmail.com\",\r\n    \"groupId\": \"{{groupId}}\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{host}}/group-users",
-              "host": ["{{host}}"],
-              "path": ["group-users"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Find all Group Users",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [
-              {
-                "key": "projectId",
-                "value": "{{projectId}}",
-                "type": "text"
-              }
-            ],
-            "url": {
-              "raw": "{{host}}/group-users?currentPage=1&perPage=10&search=",
-              "host": ["{{host}}"],
-              "path": ["group-users"],
-              "query": [
-                {
-                  "key": "currentPage",
-                  "value": "1"
-                },
-                {
-                  "key": "perPage",
-                  "value": "10"
-                },
-                {
-                  "key": "search",
-                  "value": ""
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Find one Group User",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [
-              {
-                "key": "projectId",
-                "value": "{{projectId}}",
-                "type": "text"
-              }
-            ],
-            "url": {
-              "raw": "{{host}}/group-users/{{groupUserId}}",
-              "host": ["{{host}}"],
-              "path": ["group-users", "{{groupUserId}}"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Delete one Group User",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [""],
-                "type": "text/javascript",
-                "packages": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "projectId",
-                "value": "{{projectId}}",
-                "type": "text"
-              }
-            ],
-            "url": {
-              "raw": "{{host}}/group-users/{{groupUserId}}",
-              "host": ["{{host}}"],
-              "path": ["group-users", "{{groupUserId}}"]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "Facility Users",
-      "item": [
-        {
-          "name": "Create Facility User",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": ["if (pm.response.code >= 200 && pm.response.code < 300) {\r", "    pm.collectionVariables.set(\"facilityUserId\", pm.response.json().id)\r", "}"],
-                "type": "text/javascript",
-                "packages": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [
-              {
-                "key": "projectId",
-                "value": "{{projectId}}",
-                "type": "text"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"email\": \"user@gmail.com\",\r\n    \"facilityId\": \"{{facilityId}}\",\r\n    \"facilityRoleId\": \"{{facilityRoleId}}\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{host}}/facility-users",
-              "host": ["{{host}}"],
-              "path": ["facility-users"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Find many Facility Users",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [
-              {
-                "key": "projectId",
-                "value": "{{projectId}}",
-                "type": "text"
-              }
-            ],
-            "url": {
-              "raw": "{{host}}/facility-users?currentPage=1&perPage=10&search=",
-              "host": ["{{host}}"],
-              "path": ["facility-users"],
-              "query": [
-                {
-                  "key": "currentPage",
-                  "value": "1"
-                },
-                {
-                  "key": "perPage",
-                  "value": "10"
-                },
-                {
-                  "key": "search",
-                  "value": ""
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Find one Facility User",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [
-              {
-                "key": "projectId",
-                "value": "{{projectId}}",
-                "type": "text"
-              }
-            ],
-            "url": {
-              "raw": "{{host}}/facility-users/{{facilityUserId}}",
-              "host": ["{{host}}"],
-              "path": ["facility-users", "{{facilityUserId}}"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Update one Facility User",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [""],
-                "type": "text/javascript",
-                "packages": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "PATCH",
-            "header": [
-              {
-                "key": "projectId",
-                "value": "{{projectId}}",
-                "type": "text"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"facilityRoleId\": \"{{facilityRoleId}}\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{host}}/facility-users/{{facilityUserId}}",
-              "host": ["{{host}}"],
-              "path": ["facility-users", "{{facilityUserId}}"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Delete one Facility User",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [""],
-                "type": "text/javascript",
-                "packages": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "projectId",
-                "value": "{{projectId}}",
-                "type": "text"
-              }
-            ],
-            "url": {
-              "raw": "{{host}}/facility-users/{{facilityUserId}}",
-              "host": ["{{host}}"],
-              "path": ["facility-users", "{{facilityUserId}}"]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "Environments",
-      "item": [
-        {
-          "name": "Create Environment",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": ["if (pm.response.code >= 200 && pm.response.code < 300) {\r", "    pm.collectionVariables.set(\"environmentId\", pm.response.json().id)\r", "}"],
-                "type": "text/javascript",
-                "packages": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [
-              {
-                "key": "projectId",
-                "value": "{{projectId}}",
-                "type": "text"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"key\": \"abilityToUseOwnAi\",\r\n    \"valueType\": \"boolean\",\r\n    \"destination\": \"first\",\r\n    \"label\": \"Ability for company to use own AI\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{host}}/environments",
-              "host": ["{{host}}"],
-              "path": ["environments"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Find many Environments",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [
-              {
-                "key": "projectId",
-                "value": "{{projectId}}",
-                "type": "text"
-              }
-            ],
-            "url": {
-              "raw": "{{host}}/environments?currentPage=1&perPage=10&search=",
-              "host": ["{{host}}"],
-              "path": ["environments"],
-              "query": [
-                {
-                  "key": "currentPage",
-                  "value": "1"
-                },
-                {
-                  "key": "perPage",
-                  "value": "10"
-                },
-                {
-                  "key": "search",
-                  "value": ""
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Find one Environment",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [
-              {
-                "key": "projectId",
-                "value": "{{projectId}}",
-                "type": "text"
-              }
-            ],
-            "url": {
-              "raw": "{{host}}/environments/{{environmentId}}",
-              "host": ["{{host}}"],
-              "path": ["environments", "{{environmentId}}"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Update one Environment",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [""],
-                "type": "text/javascript",
-                "packages": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "PATCH",
-            "header": [
-              {
-                "key": "projectId",
-                "value": "{{projectId}}",
-                "type": "text"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"key\": \"abilityToUseOwnAi\",\r\n    \"label\": \"Ability for company to use own AI.\",\r\n    \"placeholder\": \"test placeholder\",\r\n    \"description\": \"test description\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{host}}/environments/{{environmentId}}",
-              "host": ["{{host}}"],
-              "path": ["environments", "{{environmentId}}"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Delete one Environment",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [""],
-                "type": "text/javascript",
-                "packages": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "projectId",
-                "value": "{{projectId}}",
-                "type": "text"
-              }
-            ],
-            "url": {
-              "raw": "{{host}}/environments/{{environmentId}}",
-              "host": ["{{host}}"],
-              "path": ["environments", "{{environmentId}}"]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "Environments Value",
-      "item": [
-        {
-          "name": "Find all Environment Values",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [
-              {
-                "key": "projectId",
-                "value": "{{projectId}}",
-                "type": "text"
-              }
-            ],
-            "url": {
-              "raw": "{{host}}/environment-values?facilitiyId={{facilityId}}",
-              "host": ["{{host}}"],
-              "path": ["environment-values"],
-              "query": [
-                {
-                  "key": "facilitiyId",
-                  "value": "{{facilityId}}"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Update many Environment Values",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [""],
-                "type": "text/javascript",
-                "packages": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [
-              {
-                "key": "projectId",
-                "value": "{{projectId}}",
-                "type": "text"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"facilityId\": \"{{facilityId}}\",\r\n    \"items\": [\r\n        {\r\n            \"{{environmentId}}\":true\r\n        }\r\n    ]\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{host}}/environment-values/update-many",
-              "host": ["{{host}}"],
-              "path": ["environment-values", "update-many"]
-            }
-          },
-          "response": []
-        }
-      ]
-    }
-  ],
-  "event": [
-    {
-      "listen": "prerequest",
-      "script": {
-        "type": "text/javascript",
-        "packages": {},
-        "exec": [""]
-      }
-    },
-    {
-      "listen": "test",
-      "script": {
-        "type": "text/javascript",
-        "packages": {},
-        "exec": [""]
-      }
-    }
-  ],
-  "variable": [
-    {
-      "key": "host",
-      "value": "http://localhost:3001/api",
-      "type": "string"
-    },
-    {
-      "key": "email",
-      "value": "paul@bamboostrategicmedia.com",
-      "type": "string"
-    },
-    {
-      "key": "password",
-      "value": "7W.EE@G99tqO*ja1da",
-      "type": "string"
-    },
-    {
-      "key": "accessToken",
-      "value": "",
-      "type": "string"
-    },
-    {
-      "key": "refreshToken",
-      "value": "",
-      "type": "string"
-    },
-    {
-      "key": "primaryRoleId",
-      "value": ""
-    },
-    {
-      "key": "userId",
-      "value": "",
-      "type": "string"
-    },
-    {
-      "key": "primaryUserId",
-      "value": "",
-      "type": "string"
-    },
-    {
-      "key": "projectId",
-      "value": "",
-      "type": "string"
-    },
-    {
-      "key": "groupId",
-      "value": "",
-      "type": "string"
-    },
-    {
-      "key": "facilityId",
-      "value": "",
-      "type": "string"
-    },
-    {
-      "key": "groupRoleId",
-      "value": "",
-      "type": "string"
-    },
-    {
-      "key": "facilityRoleId",
-      "value": "",
-      "type": "string"
-    },
-    {
-      "key": "groupUserId",
-      "value": "",
-      "type": "string"
-    },
-    {
-      "key": "facilityUserId",
-      "value": "",
-      "type": "string"
-    },
-    {
-      "key": "environmentId",
-      "value": "",
-      "type": "string"
-    }
-  ]
+	"info": {
+		"_postman_id": "0bb09b4b-35c4-4999-a0a5-8f4c131a1d58",
+		"name": "Templates Administration",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20080903",
+		"_collection_link": "https://bamboo-strategic-media.postman.co/workspace/Bamboo~d967b806-9939-4c1d-9f69-77310643d7b0/collection/20080903-0bb09b4b-35c4-4999-a0a5-8f4c131a1d58?action=share&source=collection_link&creator=20080903"
+	},
+	"item": [
+		{
+			"name": "OPIE auth",
+			"item": []
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Sign-up",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/authentication/sign-up",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"authentication",
+								"sign-up"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sign-in",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code >= 200 && pm.response.code < 300) {\r",
+									"    pm.collectionVariables.set(\"accessToken\", pm.response.json().accessToken)\r",
+									"    pm.collectionVariables.set(\"refreshToken\", pm.response.json().refreshToken)\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/authentication/sign-in",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"authentication",
+								"sign-in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh tokens",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code >= 200 && pm.response.code < 300) {\r",
+									"    pm.collectionVariables.set(\"accessToken\", pm.response.json().accessToken)\r",
+									"    pm.collectionVariables.set(\"refreshToken\", pm.response.json().refreshToken)\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"refreshToken\": \"{{refreshToken}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/authentication/refresh-tokens",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"authentication",
+								"refresh-tokens"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Primary Roles",
+			"item": [
+				{
+					"name": "Find all Primary Roles",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/primary-roles",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"primary-roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find one Primary Role",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/primary-roles/{{primaryRoleId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"primary-roles",
+								"{{primaryRoleId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get profile data",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/users/profile",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Primary Users",
+			"item": [
+				{
+					"name": "Create Primary User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code >= 200 && pm.response.code < 300) {\r",
+									"    pm.collectionVariables.set(\"primaryUserId\", pm.response.json().id)\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"user@gmail.com\",\r\n    \"primaryRoleId\": \"{{primaryRoleId}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/primary-users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"primary-users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find all Primary Users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/primary-users?currentPage=1&perPage=2&search=",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"primary-users"
+							],
+							"query": [
+								{
+									"key": "currentPage",
+									"value": "1"
+								},
+								{
+									"key": "perPage",
+									"value": "2"
+								},
+								{
+									"key": "search",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find one Primary User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/primary-users/{{primaryUserId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"primary-users",
+								"{{primaryUserId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update one Primary User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"primaryRoleId\": \"{{primaryRoleId}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/primary-users/{{primaryUserId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"primary-users",
+								"{{primaryUserId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete one Primary User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/primary-users/{{primaryUserId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"primary-users",
+								"{{primaryUserId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Projects",
+			"item": [
+				{
+					"name": "Create Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code >= 200 && pm.response.code < 300) {\r",
+									"    pm.collectionVariables.set(\"projectId\", pm.response.json().id)\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Project #6\",\r\n    \"description\": \"Best project\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/projects",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"projects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find all Projects",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/projects",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"projects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find one Project",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/projects/{{projectId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"projects",
+								"{{projectId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update one Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Project #2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/projects/{{projectId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"projects",
+								"{{projectId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete one Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/projects/{{projectId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"projects",
+								"{{projectId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Groups",
+			"item": [
+				{
+					"name": "Create Group",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code >= 200 && pm.response.code < 300) {\r",
+									"    pm.collectionVariables.set(\"groupId\", pm.response.json().id)\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Group #5\",\r\n    \"description\": \"Best group\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/groups",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"groups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find all Groups",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/groups",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"groups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find one Group",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/groups/{{groupId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"groups",
+								"{{groupId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update one Group",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Group #1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/groups/{{groupId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"groups",
+								"{{groupId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete one Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/projects/{{projectId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"projects",
+								"{{projectId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Facilities",
+			"item": [
+				{
+					"name": "Create Facility",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code >= 200 && pm.response.code < 300) {\r",
+									"    pm.collectionVariables.set(\"facilityId\", pm.response.json().id)\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Facility #7\",\r\n    \"description\": \"Best facility\",\r\n    \"groupId\": \"{{groupId}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/facilities",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"facilities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find all Facilities",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/facilities?groupId={{groupId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"facilities"
+							],
+							"query": [
+								{
+									"key": "groupId",
+									"value": "{{groupId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find one Group",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/facilities/{{facilityId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"facilities",
+								"{{facilityId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update one Facility",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Facility #3\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/facilities/{{facilityId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"facilities",
+								"{{facilityId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete one Facility",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/facilities/{{facilityId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"facilities",
+								"{{facilityId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Group Roles",
+			"item": [
+				{
+					"name": "Find all Group Roles",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "projectId",
+								"value": "{{projectId}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/group-roles",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"group-roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find one Group Role",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "projectId",
+								"value": "{{projectId}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/group-roles/{{groupRoleId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"group-roles",
+								"{{groupRoleId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Facility Roles",
+			"item": [
+				{
+					"name": "Find all Facility Roles",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "projectId",
+								"value": "{{projectId}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/facility-roles",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"facility-roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find one Facility Role",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "projectId",
+								"value": "{{projectId}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/facility-roles/{{facilityRoleId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"facility-roles",
+								"{{facilityRoleId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Group Users",
+			"item": [
+				{
+					"name": "Create Group User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code >= 200 && pm.response.code < 300) {\r",
+									"    pm.collectionVariables.set(\"groupUserId\", pm.response.json().id)\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "projectIda",
+								"value": "{{projectId}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"user@gmail.com\",\r\n    \"groupId\": \"{{groupId}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/group-users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"group-users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find all Group Users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "projectId",
+								"value": "{{projectId}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/group-users?groupId={{groupId}}&currentPage=1&perPage=10&search=",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"group-users"
+							],
+							"query": [
+								{
+									"key": "groupId",
+									"value": "{{groupId}}"
+								},
+								{
+									"key": "currentPage",
+									"value": "1"
+								},
+								{
+									"key": "perPage",
+									"value": "10"
+								},
+								{
+									"key": "search",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find one Group User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "projectId",
+								"value": "{{projectId}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/group-users/{{groupUserId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"group-users",
+								"{{groupUserId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete one Group User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "projectId",
+								"value": "{{projectId}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/group-users/{{groupUserId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"group-users",
+								"{{groupUserId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Facility Users",
+			"item": [
+				{
+					"name": "Create Facility User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code >= 200 && pm.response.code < 300) {\r",
+									"    pm.collectionVariables.set(\"facilityUserId\", pm.response.json().id)\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "projectId",
+								"value": "{{projectId}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"user@gmail.com\",\r\n    \"facilityId\": \"{{facilityId}}\",\r\n    \"facilityRoleId\": \"{{facilityRoleId}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/facility-users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"facility-users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find many Facility Users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "projectId",
+								"value": "{{projectId}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/facility-users?currentPage=1&perPage=10&search=",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"facility-users"
+							],
+							"query": [
+								{
+									"key": "currentPage",
+									"value": "1"
+								},
+								{
+									"key": "perPage",
+									"value": "10"
+								},
+								{
+									"key": "search",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find one Facility User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "projectId",
+								"value": "{{projectId}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/facility-users/{{facilityUserId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"facility-users",
+								"{{facilityUserId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update one Facility User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "projectId",
+								"value": "{{projectId}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"facilityRoleId\": \"{{facilityRoleId}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/facility-users/{{facilityUserId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"facility-users",
+								"{{facilityUserId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete one Facility User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "projectId",
+								"value": "{{projectId}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/facility-users/{{facilityUserId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"facility-users",
+								"{{facilityUserId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Environments",
+			"item": [
+				{
+					"name": "Create Environment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code >= 200 && pm.response.code < 300) {\r",
+									"    pm.collectionVariables.set(\"environmentId\", pm.response.json().id)\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "projectId",
+								"value": "{{projectId}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"key\": \"abilityToUseOwnAi1\",\r\n    \"valueType\": \"string\",\r\n    \"destination\": \"project\",\r\n    \"label\": \"Ability for company to use own AI\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/environments",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"environments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find many Environments",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "projectId",
+								"value": "{{projectId}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/environments?currentPage=1&perPage=10&search=",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"environments"
+							],
+							"query": [
+								{
+									"key": "currentPage",
+									"value": "1"
+								},
+								{
+									"key": "perPage",
+									"value": "10"
+								},
+								{
+									"key": "search",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find one Environment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "projectId",
+								"value": "{{projectId}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/environments/{{environmentId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"environments",
+								"{{environmentId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update one Environment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "projectId",
+								"value": "{{projectId}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"key\": \"abilityToUseOwnAi\",\r\n    \"label\": \"Ability for company to use own AI.\",\r\n    \"placeholder\": \"test placeholder\",\r\n    \"description\": \"test description\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/environments/{{environmentId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"environments",
+								"{{environmentId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete one Environment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "projectId",
+								"value": "{{projectId}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/environments/{{environmentId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"environments",
+								"{{environmentId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Environments Value",
+			"item": [
+				{
+					"name": "Find all Environment Values",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "projectId",
+								"value": "{{projectId}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/environment-values/{{facilityId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"environment-values",
+								"{{facilityId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update many Environment Values",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "projectId",
+								"value": "{{projectId}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"items\": [\r\n    {\r\n        \"key\": \"{{environmentId}}\",\r\n        \"value\": \"false\"\r\n    }\r\n    // },\r\n    // {\r\n    //     \"key\": \"e315e344-39ee-4e1b-a82f-435a38c2e1ca\",\r\n    //     \"value\": 2\r\n    // },\r\n    // {\r\n    //     \"key\": \"886a9497-f9c2-4ccb-ae78-42383a2b8cab\",\r\n    //     \"value\": \"fir\"\r\n    // }\r\n]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/environment-values/{{facilityId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"environment-values",
+								"{{facilityId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "OPIE facilities",
+			"item": [
+				{
+					"name": "Get all facilities",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "key",
+									"value": "x-api-key",
+									"type": "string"
+								},
+								{
+									"key": "value",
+									"value": "01GAM4BC6XMWVN4HXBKJQZ7HM7",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://dev.opiesoftware.com/api/eos/facilityinfo/v1.0/facilityinfo/Facilities",
+							"protocol": "http",
+							"host": [
+								"dev",
+								"opiesoftware",
+								"com"
+							],
+							"path": [
+								"api",
+								"eos",
+								"facilityinfo",
+								"v1.0",
+								"facilityinfo",
+								"Facilities"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://localhost:3001/api",
+			"type": "string"
+		},
+		{
+			"key": "email",
+			"value": "paul@bamboostrategicmedia.com",
+			"type": "string"
+		},
+		{
+			"key": "password",
+			"value": "7W.EE@G99tqO*ja1da",
+			"type": "string"
+		},
+		{
+			"key": "accessToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "refreshToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "primaryRoleId",
+			"value": ""
+		},
+		{
+			"key": "userId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "primaryUserId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "projectId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "groupId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "facilityId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "groupRoleId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "facilityRoleId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "groupUserId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "facilityUserId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "environmentId",
+			"value": "",
+			"type": "string"
+		}
+	]
 }

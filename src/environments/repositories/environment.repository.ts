@@ -93,6 +93,12 @@ export class EnvironmentRepository extends Repository<Environment> {
     });
   }
 
+  findAllProjectEnvironments(projectId: string): Promise<Environment[]> {
+    return this.find({
+      where: { project: { id: projectId }, destination: EnvironmentDestinations.PROJECT },
+    });
+  }
+
   findOneByIdWithRelations(
     id: string,
     projectId: string,

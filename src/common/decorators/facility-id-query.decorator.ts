@@ -12,12 +12,14 @@ import { EntityType } from "../enums/entity-type.enum";
  * This decorator always extracts the Facility UUID from the 'facilityId' query parameter.
  * Ensure that the 'facilityId' is included in the request query parameters for this decorator to function properly.
  */
-export const FacilityId = createParamDecorator((data: unknown, ctx: ExecutionContext) => {
-  const request = ctx.switchToHttp().getRequest();
-  const facilityId = request.query.facilityid;
-  return new CustomUUIDPipe(EntityType.FACILITY).transform(facilityId, {
-    type: "query",
-    metatype: String,
-    data: "facilityId",
-  });
-});
+export const FacilityId = createParamDecorator(
+  (options: { required: boolean } = { required: true }, ctx: ExecutionContext) => {
+    const request = ctx.switchToHttp().getRequest();
+    const facilityId = request.query.facilityid;
+    return new CustomUUIDPipe(EntityType.FACILITY, options.required).transform(facilityId, {
+      type: "query",
+      metatype: String,
+      data: "facilityId",
+    });
+  },
+);

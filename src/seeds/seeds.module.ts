@@ -9,9 +9,18 @@ import { PrimaryRolesModule } from "src/primary-roles/primary-roles.module";
 import { PrimaryUsersModule } from "src/primary-users/primary-users.module";
 import { ProjectsModule } from "src/projects/projects.module";
 import { ProjectsSeedService } from "./project-seed.service";
+import { ConfigModule } from "@nestjs/config";
+import initUserConfig from "../config/initial-user.config";
 
 @Module({
-  imports: [SharedModule, UsersModule, PrimaryRolesModule, PrimaryUsersModule, ProjectsModule],
+  imports: [
+    ConfigModule.forFeature(initUserConfig),
+    SharedModule,
+    UsersModule,
+    PrimaryRolesModule,
+    PrimaryUsersModule,
+    ProjectsModule,
+  ],
   providers: [
     PrimaryRolesSeedService,
     UsersSeedService,

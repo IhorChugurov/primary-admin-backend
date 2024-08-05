@@ -9,8 +9,6 @@ export const validationSchema = Joi.object({
   DB_NAME: Joi.string().required(),
   DB_PORT: Joi.number().default(5432),
   DB_HOST: Joi.string().required(),
-  DB_SYNC: Joi.boolean().default(false),
-  DB_MIGRATION: Joi.boolean().default(true),
   DB_LOG: Joi.boolean().default(false),
   JWT_SECRET: Joi.string().required(),
   JWT_TOKEN_AUDIENCE: Joi.string().required(),

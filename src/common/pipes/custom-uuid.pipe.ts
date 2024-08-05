@@ -4,11 +4,17 @@ import { validate as uuidValidate, version as uuidVersion } from "uuid";
 
 @Injectable()
 export class CustomUUIDPipe implements PipeTransform<string> {
-  constructor(private readonly entityType: EntityType) {}
+  constructor(
+    private readonly entityType: EntityType,
+    private readonly required: boolean = true,
+  ) {}
 
   transform(value: string, metadata: ArgumentMetadata): string {
     if (!value) {
-      throw new BadRequestException(`${this.entityType} ID is missing`);
+      if (this.required) {
+        throw new BadRequestException(`${this.entityType} ID is missing`);
+      }
+      return undefined;
     }
     if (!this.isValidUUIDv4(value)) {
       throw new BadRequestException(`Invalid ${this.entityType} ID #${value}`);

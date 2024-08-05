@@ -16,6 +16,6 @@ export abstract class EnvironmentValue extends AbstractEntity {
   @ManyToOne(() => Project, (project) => project.environmentValues)
   project: Project;
 
-  @ManyToOne(() => Facility, (facility) => facility.environmentValues)
-  facility: Facility;
+  @ManyToOne(() => Facility, (facility) => facility.environmentValues, { nullable: true })
+  facility?: Facility;
 }

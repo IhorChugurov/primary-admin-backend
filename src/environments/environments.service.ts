@@ -52,6 +52,10 @@ export class EnvironmentsService {
     return this.environmentRepository.findAllFirstAdminEnvironments(projectId);
   }
 
+  findAllProjectEnvironments(projectId: string): Promise<Environment[]> {
+    return this.environmentRepository.findAllProjectEnvironments(projectId);
+  }
+
   async findOneWithRelations(environmentId: string, projectId: string): Promise<Environment> {
     const environment = await this.environmentRepository.findOneByIdWithRelations(
       environmentId,

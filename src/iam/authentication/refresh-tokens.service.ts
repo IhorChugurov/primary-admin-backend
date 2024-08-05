@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { User } from "src/users/entities/user.entity";
 import { RefreshTokenRepository } from "./repositories/refresh-token.repository";
 
-// TODO разобраться с этим
+// TODO InvalidatedRefreshTokenError
 export class InvalidatedRefreshTokenError extends Error {}
 
 @Injectable()

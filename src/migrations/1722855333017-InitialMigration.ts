@@ -1,24 +1,15 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class InitialMigration1722686954245 implements MigrationInterface {
-  name = "InitialMigration1722686954245";
+export class InitialMigration1722855333017 implements MigrationInterface {
+  name = "InitialMigration1722855333017";
 
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`
-            CREATE TYPE "public"."environment_destination_enum" AS ENUM(
-                'first',
-                'second',
-                'project'
-            )
-        `);
-    await queryRunner.query(`
-            CREATE TYPE "public"."environment_valuetype_enum" AS ENUM(
-                'string',
-                'boolean',
-                'number',
-                'date'
-            )
-        `);
+    await queryRunner.query(
+      `CREATE TYPE "public"."environment_valuetype_enum" AS ENUM('string', 'boolean', 'number', 'date')`,
+    );
+    await queryRunner.query(
+      `CREATE TYPE "public"."environment_destination_enum" AS ENUM('first', 'second', 'project')`,
+    );
     await queryRunner.query(
       `CREATE TABLE "environment" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "key" character varying NOT NULL, "valueType" "public"."environment_valuetype_enum" NOT NULL, "destination" "public"."environment_destination_enum" NOT NULL, "label" character varying NOT NULL, "placeholder" character varying, "description" character varying, "projectId" uuid, CONSTRAINT "UQ_b91b7aea84ac60ff9c6a2ff21d7" UNIQUE ("key", "projectId"), CONSTRAINT "PK_f0ec97d0ac5e0e2f50f7475699f" PRIMARY KEY ("id"))`,
     );
@@ -115,8 +106,6 @@ export class InitialMigration1722686954245 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`DROP TYPE "public"."environment_value_type_enum"`);
-    await queryRunner.query(`DROP TYPE "public"."environment_destinations_enum"`);
     await queryRunner.query(
       `ALTER TABLE "primary_user" DROP CONSTRAINT "FK_e31d1dea62258134cf930de55ef"`,
     );
@@ -184,5 +173,7 @@ export class InitialMigration1722686954245 implements MigrationInterface {
     await queryRunner.query(`DROP TABLE "facility_user"`);
     await queryRunner.query(`DROP TABLE "facility_role"`);
     await queryRunner.query(`DROP TABLE "environment"`);
+    await queryRunner.query(`DROP TYPE "public"."environment_destination_enum"`);
+    await queryRunner.query(`DROP TYPE "public"."environment_valuetype_enum"`);
   }
 }

@@ -1,9 +1,40 @@
-version: '3'
+version: "3.8"
 services:
   db:
-    image: postgres
+    image: postgres:16-alpine
+    container_name: templates_db
     restart: always
-    ports:
-      - '5432:5432'
     environment:
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: pass123
+      POSTGRES_DB: templates
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: primary_admin_app
+    ports:
+      - "3001:3001"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pass123
+      POSTGRES_DB: templates
+      DB_HOST: templates_db
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+
+volumes:
+  postgres_data:

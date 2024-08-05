@@ -20,7 +20,7 @@ export class EnvironmentValuesController {
   @Get(":id")
   findAll(
     @ProjectId() projectId: string,
-    @FacilityId() facilityId: string,
+    @FacilityId({ required: false }) facilityId?: string,
   ): Promise<EnvironmentValueListDto[]> {
     return this.environmentValuesService.findAll(projectId, facilityId);
   }
@@ -28,13 +28,13 @@ export class EnvironmentValuesController {
   @Patch(":id")
   update(
     @ProjectId() projectId: string,
-    @FacilityId() facilityId: string,
     @Body() updateManyEnvironmentValuesDto: UpdateManyEnvironmentValuesDto,
+    @FacilityId({ required: false }) facilityId?: string,
   ): Promise<ResponseMessage> {
     return this.environmentValuesService.updateMany(
       projectId,
-      facilityId,
       updateManyEnvironmentValuesDto,
+      facilityId,
     );
   }
 }
