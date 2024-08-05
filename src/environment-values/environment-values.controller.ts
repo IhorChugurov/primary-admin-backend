@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Patch } from "@nestjs/common";
+import { Body, Controller, Get, Post } from "@nestjs/common";
 import { EnvironmentValuesService } from "./environment-values.service";
 import { Roles } from "src/primary-users/authorization/decorators/primary-roles.decorator";
 import { EnvironmentValueListDto } from "./dto/environment-value-list.dto";
@@ -17,16 +17,24 @@ export class EnvironmentValuesController {
   constructor(private readonly environmentValuesService: EnvironmentValuesService) {}
 
   @UseDto(EnvironmentValueListDto)
-  @Get(":id")
-  findAll(
+  @Get()
+  findManyFacilityEnvironmentValues(
     @ProjectId() projectId: string,
-    @FacilityId({ required: false }) facilityId?: string,
+    @FacilityId() facilityId: string,
   ): Promise<EnvironmentValueListDto[]> {
-    return this.environmentValuesService.findAll(projectId, facilityId);
+    return this.environmentValuesService.findMany(projectId, facilityId);
   }
 
-  @Patch(":id")
-  update(
+  @UseDto(EnvironmentValueListDto)
+  @Get("project-environment-values")
+  findManyProjectEnvironmentValues(
+    @ProjectId() projectId: string,
+  ): Promise<EnvironmentValueListDto[]> {
+    return this.environmentValuesService.findMany(projectId);
+  }
+
+  @Post()
+  updateManyFacilityEnvironmentValues(
     @ProjectId() projectId: string,
     @Body() updateManyEnvironmentValuesDto: UpdateManyEnvironmentValuesDto,
     @FacilityId({ required: false }) facilityId?: string,
@@ -36,5 +44,13 @@ export class EnvironmentValuesController {
       updateManyEnvironmentValuesDto,
       facilityId,
     );
+  }
+
+  @Post("project-environment-values")
+  updateManyProjectEnvironmentValues(
+    @ProjectId() projectId: string,
+    @Body() updateManyEnvironmentValuesDto: UpdateManyEnvironmentValuesDto,
+  ): Promise<ResponseMessage> {
+    return this.environmentValuesService.updateMany(projectId, updateManyEnvironmentValuesDto);
   }
 }

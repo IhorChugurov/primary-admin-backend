@@ -18,7 +18,7 @@ export class EnvironmentValuesService {
     private readonly facilitiesService: FacilitiesService,
   ) {}
 
-  async findAll(projectId: string, facilityId?: string) {
+  async findMany(projectId: string, facilityId?: string) {
     await this.projectsService.findOne(projectId);
     if (facilityId) {
       await this.facilitiesService.findOne(facilityId);

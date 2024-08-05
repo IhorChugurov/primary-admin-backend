@@ -15,7 +15,7 @@ import { EntityType } from "../enums/entity-type.enum";
 export const FacilityId = createParamDecorator(
   (options: { required: boolean } = { required: true }, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
-    const facilityId = request.query.facilityid;
+    const facilityId = request.query.facilityId;
     return new CustomUUIDPipe(EntityType.FACILITY, options.required).transform(facilityId, {
       type: "query",
       metatype: String,
