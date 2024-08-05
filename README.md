@@ -1,6 +1,6 @@
-# Template administration admin panel
+# Templates Administrative
 
-Template administration admin panel.
+Primary admin panel.
 
 ## Overview
 
