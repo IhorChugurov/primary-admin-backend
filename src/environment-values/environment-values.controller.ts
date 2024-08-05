@@ -27,7 +27,7 @@ export class EnvironmentValuesController {
   }
 
   @UseDto(EnvironmentValueListDto)
-  @Get("project-environment-values")
+  @Get("project")
   findManyProjectEnvironmentValues(
     @ProjectId() projectId: string,
   ): Promise<EnvironmentValueListDto[]> {
@@ -47,7 +47,7 @@ export class EnvironmentValuesController {
     );
   }
 
-  @Post("project-environment-values")
+  @Patch("project/:id")
   updateManyProjectEnvironmentValues(
     @ProjectId() projectId: string,
     @Body() updateManyEnvironmentValuesDto: UpdateManyEnvironmentValuesDto,
