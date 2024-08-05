@@ -5,10 +5,11 @@ import { Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm";
 
 @Entity()
 export class PrimaryUser extends AbstractEntity {
-  @OneToOne(() => User, (user) => user.primaryUser)
-  @JoinColumn()
+  @OneToOne(() => User, (user) => user.primaryUser, { nullable: false })
+  @JoinColumn({ name: "userId" })
   user: User;
 
-  @ManyToOne(() => PrimaryRole, (primaryRole) => primaryRole.primaryUsers)
+  @ManyToOne(() => PrimaryRole, (primaryRole) => primaryRole.primaryUsers, { nullable: false })
+  @JoinColumn({ name: "primaryRoleId" })
   primaryRole: PrimaryRole;
 }

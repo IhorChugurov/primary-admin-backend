@@ -6,10 +6,10 @@ import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany, OneToOne } from 
 
 @Entity()
 export class User extends AbstractEntity {
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: false })
   email: string;
 
-  @Column()
+  @Column({ nullable: false })
   password: string;
 
   @BeforeInsert()

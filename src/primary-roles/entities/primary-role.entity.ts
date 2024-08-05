@@ -4,7 +4,7 @@ import { Column, Entity, OneToMany } from "typeorm";
 
 @Entity()
 export class PrimaryRole extends AbstractEntity {
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: false })
   name: string;
 
   @Column({ nullable: true })

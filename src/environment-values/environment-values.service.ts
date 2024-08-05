@@ -17,34 +17,32 @@ export class EnvironmentValuesService {
     private readonly projectsService: ProjectsService,
     private readonly facilitiesService: FacilitiesService,
   ) {}
+
   async findAll(projectId: string, facilityId?: string) {
     await this.projectsService.findOne(projectId);
     if (facilityId) {
       await this.facilitiesService.findOne(facilityId);
     }
-    let environments;
-    if (facilityId) {
-      environments = await this.environmentsService.findAllFirstAdminEnvironments(projectId);
-    } else {
-      environments = await this.environmentsService.findAllProjectEnvironments(projectId);
-    }
-    let environmentValues;
-    if (facilityId) {
-      environmentValues = await this.environmentValueRepository.findAllFacilityValuesWithRelations(
-        projectId,
-        facilityId,
-        ["environment", "facility", "project"],
-      );
-    } else {
-      environmentValues = await this.environmentValueRepository.findAllProjectValuesWithRelations(
-        projectId,
-        ["environment", "project"],
-      );
-    }
-    const environmentValueMap = new Map<string, EnvironmentValue>();
-    environmentValues.forEach((envValue) => {
-      environmentValueMap.set(envValue.environment.id, envValue);
-    });
+
+    const [environments, environmentValues] = await Promise.all([
+      facilityId
+        ? this.environmentsService.findAllFirstAdminEnvironments(projectId)
+        : this.environmentsService.findAllProjectEnvironments(projectId),
+      facilityId
+        ? this.environmentValueRepository.findAllFacilityValuesWithRelations(
+            projectId,
+            facilityId,
+            ["environment", "facility", "project"],
+          )
+        : this.environmentValueRepository.findAllProjectValuesWithRelations(projectId, [
+            "environment",
+            "project",
+          ]),
+    ]);
+
+    const environmentValueMap = new Map(
+      environmentValues.map((envValue) => [envValue.environment.id, envValue]),
+    );
 
     const result = environments.map((environment) => {
       const environmentValue = environmentValueMap.get(environment.id);

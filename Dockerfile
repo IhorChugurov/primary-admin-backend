@@ -10,14 +10,17 @@ RUN mkdir -p /usr/src/app
 # Set working directory
 WORKDIR /usr/src/app
 
-# # Copy package.json and pnpm-lock.yaml to install dependencies
-# COPY package.json pnpm-lock.yaml ./
-
 # Install pnpm
 RUN npm install -g pnpm
 
 # Install ts-node
 RUN npm install -g ts-node
+
+# Copy package.json and pnpm-lock.yaml to install dependencies
+COPY package.json pnpm-lock.yaml ./
+
+# Install dependencies
+RUN pnpm install --frozen-lockfile
 
 # Copy the rest of the application code
 COPY . .

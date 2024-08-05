@@ -2,17 +2,18 @@ import { AbstractEntity } from "src/common/entities/abstract.entity";
 import { EnvironmentValue } from "src/environment-values/entities/environment-value.entity";
 import { FacilityUser } from "src/facility-users/entities/facility-user.entity";
 import { Group } from "src/groups/entities/group.entity";
-import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 
 @Entity()
 export class Facility extends AbstractEntity {
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: false })
   name: string;
 
   @Column({ nullable: true })
   description: string;
 
-  @ManyToOne(() => Group, (group) => group.facilities)
+  @ManyToOne(() => Group, (group) => group.facilities, { nullable: false })
+  @JoinColumn({ name: "groupId" })
   group: Group;
 
   @OneToMany(() => FacilityUser, (facilityUser) => facilityUser.facility)
