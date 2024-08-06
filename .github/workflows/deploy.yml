@@ -24,7 +24,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: user/app:latest,user/app:${{ github.sha }}
+          tags: ihorchugurov/primary-admin:latest,ihorchugurov/primary-admin:${{ github.sha }}
 
   deploy:
     needs: build-and-push
@@ -37,5 +37,5 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            docker pull user/app:${{ github.sha }}
+            docker pull ihorchugurov/primary-admin:${{ github.sha }}
             docker-compose up -d
