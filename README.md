@@ -18,7 +18,7 @@ Application was developed using following technologies: Nestjs, TypeScript, Post
 - [Design](https://www.figma.com/design/FIUrFnJWbJ0MyupUiEDvl5/Template-Administration?node-id=0-1&t=SLq2JcvrVNXhQ6B4-1)
 - Postman collection in the root of the project
 
-## Local Docker Installation
+## Docker Installation
 
 To deploy this project, follow these steps:
 
@@ -67,12 +67,12 @@ To deploy this project, follow these steps:
 
 5. If necessary, install **TypeORM** globally:
     ```sh
-    pnpm install -g typeorm
+    npm install -g typeorm
     ```
 
 6. If necessary, install **ts-node** globally:
     ```sh
-    pnpm install -g ts-node
+    npm install -g ts-node
     ```
 
 7. Create **docker-compose.yml** file based on the example in the root folder of the project. Use your database credentials.
