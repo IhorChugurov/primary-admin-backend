@@ -1,4 +1,4 @@
-# Templates Administrative
+# Primary admin panel
 
 Primary admin panel.
 
@@ -9,7 +9,7 @@ Application was developed using following technologies: Nestjs, TypeScript, Post
 ## Prerequisites
 
 - **NodeJS** v20.16 or latest
-- **pnpm** v9.1.1 or latest
+- **pnpm** v9.1.1
 - **PostgreSQL** v16.3 or latest
 
 ## Links to Other Resources
@@ -18,7 +18,7 @@ Application was developed using following technologies: Nestjs, TypeScript, Post
 - [Design](https://www.figma.com/design/FIUrFnJWbJ0MyupUiEDvl5/Template-Administration?node-id=0-1&t=SLq2JcvrVNXhQ6B4-1)
 - Postman collection in the root of the project
 
-## Docker Installation
+## Local Docker Installation
 
 To deploy this project, follow these steps:
 
@@ -55,46 +55,51 @@ To deploy this project, follow these steps:
     cd primary-admin-backend
     ```
 
-3. Install dependencies:
+3. If necessary, install **pnpm** globally:
     ```sh
-    pnpm install
+    npm install -g pnpm@9.1.1 
     ```
 
-4. If necessary, install **TypeORM** globally:
+4. Install dependencies:
+    ```sh
+    pnpm install --frozen-lockfile
+    ```
+
+5. If necessary, install **TypeORM** globally:
     ```sh
     pnpm install -g typeorm
     ```
 
-5. If necessary, install **ts-node** globally:
+6. If necessary, install **ts-node** globally:
     ```sh
     pnpm install -g ts-node
     ```
 
-6. Create **docker-compose.yml** file based on the example in the root folder of the project. Use your database credentials.
+7. Create **docker-compose.yml** file based on the example in the root folder of the project. Use your database credentials.
 
-7. Run the database docker container:
+8. Run the database docker container:
     ```sh
     docker-compose up -d --build
     ```
 
-8. Create **.env** file based on the example in the root folder of the project. Use your database credentials.
+9. Create **.env** file based on the example in the root folder of the project. Use your database credentials.
 
-9. Build the project:
+10. Build the project:
     ```sh
     pnpm run build
     ```
 
-10. Run migration to initialize the database:
+11. Run migration to initialize the database:
     ```sh
     pnpm run migration:run
     ```
 
-11. Seed the database:
+12. Seed the database:
     ```sh
     pnpm run seed
     ```
 
-12. Run the project:
+13. Run the project:
     ```sh
     npm run start:prod
     ```

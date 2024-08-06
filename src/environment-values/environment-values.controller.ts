@@ -38,6 +38,7 @@ export class EnvironmentValuesController {
   updateManyFacilityEnvironmentValues(
     @ProjectId() projectId: string,
     @Body() updateManyEnvironmentValuesDto: UpdateManyEnvironmentValuesDto,
+    // TODO Here will be wrong error because from param I get id not env value, but facility id
     @UUIDParam() facilityId?: string,
   ): Promise<ResponseMessage> {
     return this.environmentValuesService.updateMany(
