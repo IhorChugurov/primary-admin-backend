@@ -20,6 +20,8 @@ import { GroupUsersModule } from "./group-users/group-users.module";
 import { FacilityUsersModule } from "./facility-users/facility-users.module";
 import { EnvironmentsModule } from "./environments/environments.module";
 import { EnvironmentValuesModule } from "./environment-values/environment-values.module";
+import { EntityDefinitionsModule } from "./enitity-definitions/entity-definitions.module";
+import { EntityFieldsModule } from './entity-fields/entity-fields.module';
 
 @Module({
   imports: [
@@ -44,6 +46,8 @@ import { EnvironmentValuesModule } from "./environment-values/environment-values
     FacilityUsersModule,
     EnvironmentsModule,
     EnvironmentValuesModule,
+    EntityDefinitionsModule,
+    EntityFieldsModule,
   ],
 })
 export class AppModule {}

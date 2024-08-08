@@ -88,7 +88,7 @@ export class EnvironmentsService {
   async remove(environmentId: string, projectId: string): Promise<ResponseMessage> {
     const environment = await this.environmentRepository.findOneByID(environmentId, projectId);
     if (!environment) {
-      throw new NotFoundException(`Environment admin with ID #${environmentId} not found`);
+      throw new NotFoundException(`Environment with ID #${environmentId} not found`);
     }
     await this.environmentRepository.deleteById(environmentId, projectId);
     return {

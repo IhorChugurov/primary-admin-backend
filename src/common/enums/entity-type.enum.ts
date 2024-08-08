@@ -10,4 +10,6 @@ export enum EntityType {
   FACILITY_USER = "Facility admin",
   ENVIRONMENT_VALUE = "Environment value",
   PRIMARY_ROLE = "Primary role",
+  ENTITY_DEFINITION = "Entity definition",
+  ENTITY_FIELD = "Entity field",
 }

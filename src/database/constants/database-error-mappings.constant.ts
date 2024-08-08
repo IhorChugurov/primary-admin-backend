@@ -11,6 +11,8 @@ export enum EntityKeys {
   FACILITY_USER = "facilityUser",
   ENVIRONMENT = "environment",
   ENVIRONMENT_VALUE = "environmentValue",
+  ENTITY_DEFINITION = "entityDefinition",
+  ENTITY_FIELD = "entityField",
 }
 
 interface ErrorMapping {
@@ -30,6 +32,8 @@ interface EntityErrorMappings {
   [EntityKeys.FACILITY_USER]: ErrorMapping;
   [EntityKeys.ENVIRONMENT]: ErrorMapping;
   [EntityKeys.ENVIRONMENT_VALUE]: ErrorMapping;
+  [EntityKeys.ENTITY_DEFINITION]: ErrorMapping;
+  [EntityKeys.ENTITY_FIELD]: ErrorMapping;
 }
 
 export const sharedErrorMappings: ErrorMapping = {
@@ -72,5 +76,11 @@ export const entitySpecificErrorMappings: EntityErrorMappings = {
   },
   [EntityKeys.ENVIRONMENT_VALUE]: {
     "23505": "Environment with this key already exists",
+  },
+  [EntityKeys.ENTITY_DEFINITION]: {
+    "23505": "Entity with this table name already exists",
+  },
+  [EntityKeys.ENTITY_FIELD]: {
+    "23505": "Entity field with this name already exists",
   },
 };

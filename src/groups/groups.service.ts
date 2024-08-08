@@ -86,7 +86,6 @@ export class GroupsService {
     }
 
     const allFacilities = group.facilities || [];
-    console.log(allFacilities);
     const facilities = allFacilities.slice(0, 4);
     const facilitiesQty = allFacilities.length;
 

@@ -1,4 +1,5 @@
 import { AbstractEntity } from "src/common/entities/abstract.entity";
+import { EntityDefinition } from "src/enitity-definitions/entities/entity-definition.entity";
 import { EnvironmentValue } from "src/environment-values/entities/environment-value.entity";
 import { Environment } from "src/environments/entities/environment.entity";
 import { FacilityRole } from "src/facility-roles/entities/facility-role.entity";
@@ -32,4 +33,7 @@ export class Project extends AbstractEntity {
 
   @OneToMany(() => EnvironmentValue, (environmentValue) => environmentValue.project)
   environmentValues: EnvironmentValue[];
+
+  @OneToMany(() => EntityDefinition, (entityDefinition) => entityDefinition.project)
+  entityDefinitions: EntityDefinition[];
 }

@@ -56,8 +56,8 @@ export class EnvironmentRepository extends Repository<Environment> {
     return this.findOneByIdWithRelations(id, projectId, relations);
   }
 
-  async deleteById(facilityUserId: string, projectId: string): Promise<void> {
-    await this.delete({ id: facilityUserId, project: { id: projectId } });
+  async deleteById(id: string, projectId: string): Promise<void> {
+    await this.delete({ id, project: { id: projectId } });
   }
 
   async findManyWithPaginationAndRelations(

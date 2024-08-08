@@ -15,7 +15,6 @@ import { CustomUUIDPipe } from "../pipes/custom-uuid.pipe";
 export const ProjectId = createParamDecorator((data: unknown, ctx: ExecutionContext) => {
   const request = ctx.switchToHttp().getRequest();
   const projectId = request.headers.projectid;
-  console.log(request.headers);
   return new CustomUUIDPipe(EntityType.PROJECT).transform(projectId, {
     type: "custom" as Paramtype,
     metatype: String,

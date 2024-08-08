@@ -31,7 +31,6 @@ export class ProjectsController {
   @UseDto(ProjectDto)
   @Get(":id")
   findOne(@UUIDParam() projectId: string): Promise<ProjectDto> {
-    console.log("hello1");
     return this.projectsService.findOne(projectId);
   }
 
