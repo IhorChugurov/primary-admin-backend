@@ -31,9 +31,9 @@ export class EntityFieldRepository extends Repository<EntityField> {
       label: createEntityFieldDto.label,
       placeholder: createEntityFieldDto.placeholder,
       description: createEntityFieldDto.description,
-      createPage: createEntityFieldDto.createPage,
-      editPage: createEntityFieldDto.editPage,
-      editPageDisabled: createEntityFieldDto.editPageDisabled,
+      forCreatePage: createEntityFieldDto.forCreatePage,
+      forEditPage: createEntityFieldDto.forEditPage,
+      forEditPageDisabled: createEntityFieldDto.forEditPageDisabled,
     });
     try {
       await this.save(newEntityField);
@@ -60,9 +60,9 @@ export class EntityFieldRepository extends Repository<EntityField> {
         label: updateEntityFieldDto.label,
         placeholder: updateEntityFieldDto.placeholder,
         description: updateEntityFieldDto.description,
-        createPage: updateEntityFieldDto.createPage,
-        editPage: updateEntityFieldDto.editPage,
-        editPageDisabled: updateEntityFieldDto.editPageDisabled,
+        forCreatePage: updateEntityFieldDto.forCreatePage,
+        forEditPage: updateEntityFieldDto.forEditPage,
+        forEditPageDisabled: updateEntityFieldDto.forEditPageDisabled,
       },
     );
     return this.findOneByIdWithRelations(id, relations);

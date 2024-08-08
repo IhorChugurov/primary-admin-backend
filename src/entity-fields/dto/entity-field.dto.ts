@@ -26,11 +26,11 @@ export class EntityFieldDto {
   readonly description: string;
 
   @Expose()
-  readonly createPage: boolean;
+  readonly forCreatePage: boolean;
 
   @Expose()
-  readonly editPage: boolean;
+  readonly forEditPage: boolean;
 
   @Expose()
-  readonly editPageDisabled: boolean;
+  readonly forEditPageDisabled: boolean;
 }

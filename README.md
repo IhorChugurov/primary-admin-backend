@@ -101,5 +101,5 @@ To deploy this project, follow these steps:
 
 13. Run the project:
     ```sh
-    npm run start:prod
+    pnpm run start:prod
     ```

@@ -1,14 +1,14 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class InitialMigration1723139468624 implements MigrationInterface {
-  name = "InitialMigration1723139468624";
+export class InitialMigration1723145096104 implements MigrationInterface {
+  name = "InitialMigration1723145096104";
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       `CREATE TYPE "public"."entity_field_type_enum" AS ENUM('select', 'multipleSelect', 'text', 'textarea', 'number', 'date', 'boolean', 'radio', 'customTextarea')`,
     );
     await queryRunner.query(
-      `CREATE TABLE "entity_field" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "name" character varying NOT NULL, "type" "public"."entity_field_type_enum" NOT NULL, "required" boolean NOT NULL DEFAULT true, "requiredText" character varying, "label" character varying NOT NULL, "placeholder" character varying, "description" character varying, "createPage" boolean NOT NULL DEFAULT true, "editPage" boolean NOT NULL DEFAULT true, "editPageDisabled" boolean NOT NULL DEFAULT false, "entityDefinitionId" uuid NOT NULL, "selectorSourceId" uuid, CONSTRAINT "UQ_2c9f123eb5bf4754f9a34bec6cd" UNIQUE ("name", "entityDefinitionId"), CONSTRAINT "PK_c202ad849b7f4be70c1e926c632" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "entity_field" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "name" character varying NOT NULL, "type" "public"."entity_field_type_enum" NOT NULL, "required" boolean NOT NULL DEFAULT true, "requiredText" character varying, "label" character varying NOT NULL, "placeholder" character varying, "description" character varying, "forCreatePage" boolean NOT NULL DEFAULT true, "forEditPage" boolean NOT NULL DEFAULT true, "forEditPageDisabled" boolean NOT NULL DEFAULT false, "entityDefinitionId" uuid NOT NULL, "selectorSourceId" uuid, CONSTRAINT "UQ_2c9f123eb5bf4754f9a34bec6cd" UNIQUE ("name", "entityDefinitionId"), CONSTRAINT "PK_c202ad849b7f4be70c1e926c632" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE TYPE "public"."entity_definition_type_enum" AS ENUM('primary', 'secondary', 'triary')`,

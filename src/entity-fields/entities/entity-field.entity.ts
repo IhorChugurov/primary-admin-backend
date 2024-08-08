@@ -40,11 +40,11 @@ export class EntityField extends AbstractEntity {
   description: string;
 
   @Column({ default: true, nullable: false })
-  createPage: boolean;
+  forCreatePage: boolean;
 
   @Column({ default: true, nullable: false })
-  editPage: boolean;
+  forEditPage: boolean;
 
   @Column({ default: false, nullable: false })
-  editPageDisabled: boolean;
+  forEditPageDisabled: boolean;
 }

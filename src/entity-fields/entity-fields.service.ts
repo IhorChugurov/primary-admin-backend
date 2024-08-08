@@ -28,9 +28,9 @@ export class EntityFieldsService {
       projectId,
     );
     let selectorSource: EntityDefinition;
-    if (createEntityFieldDto.selectorSourceId) {
+    if (createEntityFieldDto.selectorSource) {
       selectorSource = await this.entityDefinitionsService.findOne(
-        createEntityFieldDto.selectorSourceId,
+        createEntityFieldDto.selectorSource,
         projectId,
       );
     }
@@ -84,9 +84,9 @@ export class EntityFieldsService {
       throw new NotFoundException(`Entity field with ID #${entityFieldId} not found`);
     }
     let selectorSource: EntityDefinition;
-    if (updateEntityFieldDto.selectorSourceId) {
+    if (updateEntityFieldDto.selectorSource) {
       selectorSource = await this.entityDefinitionsService.findOne(
-        updateEntityFieldDto.selectorSourceId,
+        updateEntityFieldDto.selectorSource,
         projectId,
       );
     }

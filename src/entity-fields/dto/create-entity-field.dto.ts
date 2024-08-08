@@ -24,7 +24,7 @@ export class CreateEntityFieldDto {
 
   @IsUUID()
   @IsOptional()
-  readonly selectorSourceId?: string;
+  readonly selectorSource?: string;
 
   @IsString()
   @IsNotEmpty()
@@ -39,11 +39,11 @@ export class CreateEntityFieldDto {
   readonly description?: string;
 
   @IsBoolean()
-  readonly createPage: boolean;
+  readonly forCreatePage: boolean;
 
   @IsBoolean()
-  readonly editPage: boolean;
+  readonly forEditPage: boolean;
 
   @IsBoolean()
-  readonly editPageDisabled: boolean;
+  readonly forEditPageDisabled: boolean;
 }
